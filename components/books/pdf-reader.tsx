@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useAuth } from '@/contexts/AuthContext';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
@@ -19,6 +20,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 
 interface PdfReaderProps {
   fileUrl: string;
+  bookId?: string;
 }
 
 type Theme = 'default' | 'sepia' | 'dark';
@@ -29,35 +31,91 @@ const THEME_COLORS = {
   dark: { bg: 'bg-gray-900', text: 'text-gray-100' },
 };
 
-export function PdfReader({ fileUrl }: PdfReaderProps) {
+export function PdfReader({ fileUrl, bookId }: PdfReaderProps) {
+  const { user } = useAuth();
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [scale, setScale] = useState<number>(1.0);
   const [theme, setTheme] = useState<Theme>('default');
   const [pageInput, setPageInput] = useState<string>('1');
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // 生成唯一的存储key
   const storageKey = `pdf-progress-${fileUrl}`;
 
-  // 加载保存的阅读进度
+  // 加载保存的阅读进度(从服务器或localStorage)
   useEffect(() => {
-    const savedPage = localStorage.getItem(storageKey);
-    if (savedPage) {
-      const page = parseInt(savedPage, 10);
-      if (page > 0) {
-        setPageNumber(page);
-        setPageInput(page.toString());
+    async function loadProgress() {
+      if (user && bookId) {
+        try {
+          const response = await fetch(`/api/reading-history/${bookId}`);
+          const data = await response.json();
+          if (data.history && data.history.current_page) {
+            setPageNumber(data.history.current_page);
+            setPageInput(data.history.current_page.toString());
+            return;
+          }
+        } catch (err) {
+          console.error('Error loading reading history:', err);
+        }
+      }
+
+      // 如果没有登录或加载失败,从localStorage加载
+      const savedPage = localStorage.getItem(storageKey);
+      if (savedPage) {
+        const page = parseInt(savedPage, 10);
+        if (page > 0) {
+          setPageNumber(page);
+          setPageInput(page.toString());
+        }
       }
     }
-  }, [storageKey]);
 
-  // 保存阅读进度
+    loadProgress();
+  }, [user, bookId, storageKey]);
+
+  // 保存阅读进度(防抖)
+  const saveProgress = useCallback(async (page: number, totalPages: number) => {
+    // 保存到localStorage
+    localStorage.setItem(storageKey, page.toString());
+
+    // 如果用户已登录且有bookId,保存到服务器
+    if (user && bookId && totalPages > 0) {
+      // 清除之前的定时器
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+
+      // 设置新的定时器,3秒后保存
+      saveTimeoutRef.current = setTimeout(async () => {
+        try {
+          await fetch('/api/reading-history', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              book_id: bookId,
+              current_page: page,
+              total_pages: totalPages,
+              view_mode: 'pdf',
+              scroll_position: 0,
+            }),
+          });
+        } catch (err) {
+          console.error('Error saving reading progress:', err);
+        }
+      }, 3000);
+    }
+  }, [user, bookId, storageKey]);
+
+  // 监听页码变化,自动保存进度
   useEffect(() => {
     if (numPages > 0) {
-      localStorage.setItem(storageKey, pageNumber.toString());
+      saveProgress(pageNumber, numPages);
     }
-  }, [pageNumber, storageKey, numPages]);
+  }, [pageNumber, numPages, saveProgress]);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);

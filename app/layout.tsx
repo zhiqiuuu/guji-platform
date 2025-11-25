@@ -3,6 +3,7 @@ import { Noto_Serif_SC } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const notoSerifSC = Noto_Serif_SC({
   weight: ['400', '500', '600', '700'],
@@ -23,9 +24,11 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className={notoSerifSC.variable}>
       <body className="min-h-screen flex flex-col antialiased">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <AuthProvider>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

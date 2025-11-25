@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -19,6 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface TextReaderProps {
   text: string;
@@ -48,6 +49,7 @@ const LINE_HEIGHTS = {
 };
 
 export function TextReader({ text, bookId }: TextReaderProps) {
+  const { user } = useAuth();
   const [theme, setTheme] = useState<Theme>('sepia');
   const [fontSize, setFontSize] = useState<keyof typeof FONT_SIZES>('medium');
   const [lineHeight, setLineHeight] = useState<keyof typeof LINE_HEIGHTS>('normal');
@@ -57,11 +59,15 @@ export function TextReader({ text, bookId }: TextReaderProps) {
   const [currentMatch, setCurrentMatch] = useState(0);
   const [totalMatches, setTotalMatches] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
   // 生成唯一的存储key
   const storageKey = `text-reader-settings-${bookId}`;
+  const scrollStorageKey = `text-scroll-${bookId}`;
 
-  // 加载保存的设置
+  // 加载保存的设置和阅读进度
   useEffect(() => {
     const savedSettings = localStorage.getItem(storageKey);
     if (savedSettings) {
@@ -75,7 +81,90 @@ export function TextReader({ text, bookId }: TextReaderProps) {
         console.error('Failed to load settings:', e);
       }
     }
-  }, [storageKey]);
+
+    // 加载滚动位置
+    async function loadScrollPosition() {
+      if (user && bookId) {
+        try {
+          const response = await fetch(`/api/reading-history/${bookId}`);
+          const data = await response.json();
+          if (data.history && data.history.scroll_position) {
+            setScrollPosition(data.history.scroll_position);
+            return;
+          }
+        } catch (err) {
+          console.error('Error loading reading history:', err);
+        }
+      }
+
+      // 如果没有登录或加载失败,从localStorage加载
+      const savedScroll = localStorage.getItem(scrollStorageKey);
+      if (savedScroll) {
+        const scroll = parseInt(savedScroll, 10);
+        if (scroll > 0) {
+          setScrollPosition(scroll);
+        }
+      }
+    }
+
+    loadScrollPosition();
+  }, [storageKey, scrollStorageKey, user, bookId]);
+
+  // 恢复滚动位置
+  useEffect(() => {
+    if (scrollContainerRef.current && scrollPosition > 0) {
+      scrollContainerRef.current.scrollTop = scrollPosition;
+    }
+  }, [scrollPosition]);
+
+  // 保存阅读进度(防抖)
+  const saveProgress = useCallback(async (scroll: number) => {
+    // 保存到localStorage
+    localStorage.setItem(scrollStorageKey, scroll.toString());
+
+    // 如果用户已登录,保存到服务器
+    if (user && bookId) {
+      // 清除之前的定时器
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+
+      // 设置新的定时器,3秒后保存
+      saveTimeoutRef.current = setTimeout(async () => {
+        try {
+          await fetch('/api/reading-history', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              book_id: bookId,
+              current_page: 0, // 文本模式不使用页码
+              total_pages: 0,
+              view_mode: 'text',
+              scroll_position: scroll,
+            }),
+          });
+        } catch (err) {
+          console.error('Error saving reading progress:', err);
+        }
+      }, 3000);
+    }
+  }, [user, bookId, scrollStorageKey]);
+
+  // 监听滚动事件
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const scroll = container.scrollTop;
+      saveProgress(scroll);
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [saveProgress]);
 
   // 保存设置
   useEffect(() => {
@@ -299,7 +388,10 @@ export function TextReader({ text, bookId }: TextReaderProps) {
       </div>
 
       {/* 文本显示区域 */}
-      <div className={`flex-1 w-full overflow-auto ${currentTheme.bg} p-8 transition-colors`}>
+      <div
+        ref={scrollContainerRef}
+        className={`flex-1 w-full overflow-auto ${currentTheme.bg} p-8 transition-colors`}
+      >
         <div className="max-w-4xl mx-auto">
           <article
             className={`
