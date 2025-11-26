@@ -8,8 +8,23 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search') || undefined;
     const category = searchParams.get('category') || undefined;
     const dynasty = searchParams.get('dynasty') || undefined;
+    // 新的层级过滤参数
+    const libraryType = searchParams.get('library_type') || undefined;
+    const academy = searchParams.get('academy') || undefined;
+    const year = searchParams.get('year') || undefined;
+    const season = searchParams.get('season') || undefined;
+    const subject = searchParams.get('subject') || undefined;
 
-    const books = await filterBooks({ search, category, dynasty });
+    const books = await filterBooks({
+      search,
+      category,
+      dynasty,
+      libraryType,
+      academy,
+      year,
+      season,
+      subject,
+    });
 
     return NextResponse.json(books);
   } catch (error) {

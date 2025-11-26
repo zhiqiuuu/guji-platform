@@ -56,7 +56,7 @@ export function BookFilters({
       <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg p-4 border-2 border-amber-200">
         <div className="flex items-center gap-2 mb-4">
           <Library className="h-5 w-5 text-amber-700" />
-          <h3 className="font-bold text-gray-900 text-lg">四部分类</h3>
+          <h3 className="font-bold text-gray-900 text-lg">课程分类</h3>
         </div>
         <div className="space-y-1">
           <button

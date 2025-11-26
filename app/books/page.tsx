@@ -2,16 +2,22 @@
 
 import { useState, useEffect } from 'react';
 import { BookCard } from '@/components/books/book-card';
-import { BookFilters } from '@/components/books/book-filters';
+import { HierarchyNavigation } from '@/components/books/hierarchy-navigation';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
-import type { Book, Category, Dynasty } from '@/types';
+import type { Book, LibraryType } from '@/types';
 
 export default function BooksPage() {
   const [books, setBooks] = useState<Book[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<Category>();
-  const [selectedDynasty, setSelectedDynasty] = useState<Dynasty>();
+  const [filters, setFilters] = useState<{
+    libraryType?: LibraryType;
+    academy?: string;
+    year?: string;
+    season?: string;
+    category?: string;
+    subject?: string;
+  }>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,8 +25,12 @@ export default function BooksPage() {
       try {
         const params = new URLSearchParams();
         if (searchQuery) params.append('search', searchQuery);
-        if (selectedCategory) params.append('category', selectedCategory);
-        if (selectedDynasty) params.append('dynasty', selectedDynasty);
+        if (filters.libraryType) params.append('library_type', filters.libraryType);
+        if (filters.academy) params.append('academy', filters.academy);
+        if (filters.year) params.append('year', filters.year);
+        if (filters.season) params.append('season', filters.season);
+        if (filters.category) params.append('category', filters.category);
+        if (filters.subject) params.append('subject', filters.subject);
 
         const response = await fetch(`/api/books?${params}`);
         const data = await response.json();
@@ -41,30 +51,32 @@ export default function BooksPage() {
     }
 
     fetchBooks();
-  }, [searchQuery, selectedCategory, selectedDynasty]);
+  }, [searchQuery, filters]);
 
   return (
     <div className="container px-4 py-8 mx-auto max-w-7xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">书库</h1>
-        <p className="text-gray-600">浏览和搜索古籍典藏</p>
+        <p className="text-gray-600">按层级浏览课题库和课艺库</p>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* Filters Sidebar */}
-        <aside className="lg:w-64 flex-shrink-0">
-          <div className="sticky top-20">
-            <BookFilters
-              selectedCategory={selectedCategory}
-              selectedDynasty={selectedDynasty}
-              onCategoryChange={setSelectedCategory}
-              onDynastyChange={setSelectedDynasty}
+        {/* Hierarchy Navigation Sidebar */}
+        <aside className="lg:w-72 flex-shrink-0">
+          <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg p-4 border-2 border-amber-200 h-[calc(100vh-200px)]">
+            <h3 className="font-bold text-gray-900 text-lg mb-4 flex items-center gap-2">
+              <Search className="h-5 w-5 text-amber-700" />
+              层级导航
+            </h3>
+            <HierarchyNavigation
+              selectedFilters={filters}
+              onFilterChange={setFilters}
             />
           </div>
         </aside>
 
         {/* Main Content */}
-        <div className="flex-1">
+        <div className="flex-1 min-h-[500px]">
           {/* Search Bar */}
           <div className="mb-6">
             <div className="relative">
@@ -78,6 +90,42 @@ export default function BooksPage() {
               />
             </div>
           </div>
+
+          {/* Active Filters Display */}
+          {Object.keys(filters).length > 0 && (
+            <div className="mb-4 flex flex-wrap gap-2">
+              {filters.libraryType && (
+                <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm">
+                  {filters.libraryType}
+                </span>
+              )}
+              {filters.academy && (
+                <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                  {filters.academy}
+                </span>
+              )}
+              {filters.year && (
+                <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                  {filters.year}年
+                </span>
+              )}
+              {filters.season && (
+                <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">
+                  {filters.season}
+                </span>
+              )}
+              {filters.category && (
+                <span className="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-sm">
+                  {filters.category}
+                </span>
+              )}
+              {filters.subject && (
+                <span className="px-3 py-1 bg-pink-100 text-pink-800 rounded-full text-sm">
+                  {filters.subject}
+                </span>
+              )}
+            </div>
+          )}
 
           {/* Books Grid */}
           {loading ? (

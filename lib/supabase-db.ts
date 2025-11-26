@@ -26,6 +26,11 @@ export async function filterBooks(params: {
   search?: string;
   category?: string;
   dynasty?: string;
+  libraryType?: string;
+  academy?: string;
+  year?: string;
+  season?: string;
+  subject?: string;
 }): Promise<Book[]> {
   try {
     let query = supabase
@@ -46,6 +51,31 @@ export async function filterBooks(params: {
     // 按朝代筛选
     if (params.dynasty) {
       query = query.eq('dynasty', params.dynasty);
+    }
+
+    // 按书库类型筛选
+    if (params.libraryType) {
+      query = query.eq('library_type', params.libraryType);
+    }
+
+    // 按书院筛选
+    if (params.academy) {
+      query = query.eq('academy', params.academy);
+    }
+
+    // 按年份筛选
+    if (params.year) {
+      query = query.eq('year', params.year);
+    }
+
+    // 按季节筛选
+    if (params.season) {
+      query = query.eq('season', params.season);
+    }
+
+    // 按题目筛选
+    if (params.subject) {
+      query = query.eq('subject', params.subject);
     }
 
     const { data, error } = await query;

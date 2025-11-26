@@ -1,6 +1,6 @@
 import type { Category, Dynasty } from '@/types';
 
-export const CATEGORIES: Category[] = ['经部', '史部', '子部', '集部', '其他'];
+export const CATEGORIES: Category[] = ['经学', '史学', '掌故', '算学', '舆地', '词章'];
 
 export const DYNASTIES: Dynasty[] = [
   '先秦',
@@ -14,9 +14,10 @@ export const DYNASTIES: Dynasty[] = [
 ];
 
 export const CATEGORY_DESCRIPTIONS: Record<Category, string> = {
-  经部: '儒家经典及其注疏',
-  史部: '历史典籍、纪传体史书',
-  子部: '诸子百家、术数方技',
-  集部: '诗词文集、总集别集',
-  其他: '未分类古籍',
+  经学: '儒家经典及经学研究成果',
+  史学: '历史研究及史学理论',
+  掌故: '典章制度及历史掌故',
+  算学: '数学计算及天文历法',
+  舆地: '地理沿革及山川地貌',
+  词章: '诗词文章及文学创作',
 };

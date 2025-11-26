@@ -4,11 +4,13 @@ export type Book = Database['public']['Tables']['books']['Row'];
 export type BookInsert = Database['public']['Tables']['books']['Insert'];
 export type BookUpdate = Database['public']['Tables']['books']['Update'];
 
+export type LibraryType = '课题库' | '课艺库';
+
 export type BookParagraph = Database['public']['Tables']['book_paragraphs']['Row'];
 export type BookParagraphInsert = Database['public']['Tables']['book_paragraphs']['Insert'];
 export type BookParagraphUpdate = Database['public']['Tables']['book_paragraphs']['Update'];
 
-export type Category = '经部' | '史部' | '子部' | '集部' | '其他';
+export type Category = '经学' | '史学' | '掌故' | '算学' | '舆地' | '词章';
 
 export type Dynasty =
   | '先秦'

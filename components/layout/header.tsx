@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { Book, Search, User, LogOut, BookMarked, History, Settings } from 'lucide-react';
+import { Book, Search, User, LogOut, BookMarked, History, Settings, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { AuthModal } from '@/components/auth/auth-modal';
@@ -110,6 +110,17 @@ export function Header() {
                       设置
                     </Link>
                   </DropdownMenuItem>
+                  {profile?.role === 'admin' && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem asChild>
+                        <Link href="/admin/import" className="cursor-pointer text-blue-600">
+                          <Upload className="h-4 w-4 mr-2" />
+                          批量导入
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600">
                     <LogOut className="h-4 w-4 mr-2" />

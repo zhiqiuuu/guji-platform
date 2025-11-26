@@ -234,13 +234,77 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
           <PdfReader fileUrl={book.file_url} bookId={book.id} />
         ) : (
           <div className="flex items-center justify-center h-full">
-            <div className="text-center p-8">
+            <div className="max-w-4xl mx-auto p-8">
               {!canViewPdf && !hasOCRText ? (
                 <>
-                  <p className="text-gray-600 mb-4">此书籍暂不支持在线阅读</p>
-                  <Button onClick={() => window.open(book.file_url, '_blank')}>
-                    下载查看
-                  </Button>
+                  {/* 显示书籍信息 */}
+                  <div className="bg-white rounded-lg shadow-sm border p-6">
+                    <div className="space-y-4">
+                      <div>
+                        <h2 className="text-2xl font-bold text-gray-900 mb-2">{book.title}</h2>
+                        <div className="flex gap-4 text-sm text-gray-600">
+                          <span>作者: {book.author}</span>
+                          <span>朝代: {book.dynasty}</span>
+                          <span>类别: {book.category}</span>
+                        </div>
+                      </div>
+
+                      {book.description && (
+                        <div className="border-t pt-4">
+                          <h3 className="text-lg font-semibold text-gray-800 mb-2">简介</h3>
+                          <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+                            {book.description}
+                          </p>
+                        </div>
+                      )}
+
+                      {book.custom_hierarchy && (
+                        <div className="border-t pt-4">
+                          <h3 className="text-lg font-semibold text-gray-800 mb-2">分类信息</h3>
+                          <div className="grid grid-cols-2 gap-3 text-sm">
+                            {book.custom_hierarchy.level1 && (
+                              <div>
+                                <span className="text-gray-500">书院:</span>
+                                <span className="ml-2 text-gray-700">{book.custom_hierarchy.level1}</span>
+                              </div>
+                            )}
+                            {book.custom_hierarchy.level2 && (
+                              <div>
+                                <span className="text-gray-500">年份:</span>
+                                <span className="ml-2 text-gray-700">{book.custom_hierarchy.level2}</span>
+                              </div>
+                            )}
+                            {book.custom_hierarchy.level3 && (
+                              <div>
+                                <span className="text-gray-500">季节:</span>
+                                <span className="ml-2 text-gray-700">{book.custom_hierarchy.level3}</span>
+                              </div>
+                            )}
+                            {book.custom_hierarchy.level4 && (
+                              <div>
+                                <span className="text-gray-500">类别:</span>
+                                <span className="ml-2 text-gray-700">{book.custom_hierarchy.level4}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      {book.file_url && (
+                        <div className="border-t pt-4">
+                          <Button onClick={() => window.open(book.file_url, '_blank')} className="w-full">
+                            下载原文件
+                          </Button>
+                        </div>
+                      )}
+
+                      {!book.file_url && !book.description && (
+                        <p className="text-gray-500 text-center py-4">
+                          暂无更多信息
+                        </p>
+                      )}
+                    </div>
+                  </div>
                 </>
               ) : (
                 <>

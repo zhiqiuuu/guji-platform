@@ -25,6 +25,13 @@ export interface Database {
           view_count: number
           full_text: string | null
           ocr_status: 'pending' | 'processing' | 'completed' | 'failed'
+          library_type: '课题库' | '课艺库' | null
+          academy: string | null
+          year: string | null
+          season: string | null
+          subject: string | null
+          custom_hierarchy: Json | null
+          has_full_text: boolean | null
           created_at: string
           updated_at: string
         }
@@ -43,6 +50,13 @@ export interface Database {
           view_count?: number
           full_text?: string | null
           ocr_status?: 'pending' | 'processing' | 'completed' | 'failed'
+          library_type?: '课题库' | '课艺库' | null
+          academy?: string | null
+          year?: string | null
+          season?: string | null
+          subject?: string | null
+          custom_hierarchy?: Json | null
+          has_full_text?: boolean | null
           created_at?: string
           updated_at?: string
         }
@@ -61,6 +75,13 @@ export interface Database {
           view_count?: number
           full_text?: string | null
           ocr_status?: 'pending' | 'processing' | 'completed' | 'failed'
+          library_type?: '课题库' | '课艺库' | null
+          academy?: string | null
+          year?: string | null
+          season?: string | null
+          subject?: string | null
+          custom_hierarchy?: Json | null
+          has_full_text?: boolean | null
           created_at?: string
           updated_at?: string
         }
