@@ -1,0 +1,568 @@
+{
+  "total": 35,
+  "errorTypeCount": {
+    "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章": 35
+  },
+  "invalidBooks": [
+    {
+      "index": 2307,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1902",
+        "season": "春",
+        "category": "性理",
+        "subject": "道为天地之本论",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2308,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1902",
+        "season": "春",
+        "category": "性理",
+        "subject": "由象识心、徇象丧心论",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2309,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1902",
+        "season": "春",
+        "category": "性理",
+        "subject": "志伊尹之所志、学颜子之所学论",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2310,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1902",
+        "season": "春",
+        "category": "性理",
+        "subject": "正己而物正、正己而正物论",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2331,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1902",
+        "season": "夏",
+        "category": "性理",
+        "subject": "天即理也说",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2332,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1902",
+        "season": "夏",
+        "category": "性理",
+        "subject": "情者性之影说",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2333,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1902",
+        "season": "夏",
+        "category": "性理",
+        "subject": "礼先乐后论",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2334,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1902",
+        "season": "夏",
+        "category": "性理",
+        "subject": "鬼神天地之功用论",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2354,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1902",
+        "season": "秋",
+        "category": "性理",
+        "subject": "两不立则一不可见论",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2355,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1902",
+        "season": "秋",
+        "category": "性理",
+        "subject": "革而革、革而因、因而革、因而因论",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2356,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1902",
+        "season": "秋",
+        "category": "性理",
+        "subject": "生知安行资格亦用困知勉行功夫说",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2357,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1902",
+        "season": "秋",
+        "category": "性理",
+        "subject": "明三代法度通之当今然后为全儒说",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2377,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1902",
+        "season": "冬",
+        "category": "性理",
+        "subject": "天地万物本吾一体论",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2378,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1902",
+        "season": "冬",
+        "category": "性理",
+        "subject": "仁是性孝弟是用论",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2379,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1902",
+        "season": "冬",
+        "category": "性理",
+        "subject": "无思而无不通为圣人论",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2380,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1902",
+        "season": "冬",
+        "category": "性理",
+        "subject": "不有两则无一论",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2400,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1903",
+        "season": "春",
+        "category": "性理",
+        "subject": "《论衡·本性》引宓子贱、漆雕开、公孙尼子之徒言性有善有恶说",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2401,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1903",
+        "season": "春",
+        "category": "性理",
+        "subject": "孟子言性善荀子言性恶说",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2402,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1903",
+        "season": "春",
+        "category": "性理",
+        "subject": "扬子《法言》修身言性善恶混说",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2403,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1903",
+        "season": "春",
+        "category": "性理",
+        "subject": "《申鉴·杂言下》《韩昌黎集·原性》并言性有上中下三品说",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2423,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1903",
+        "season": "夏",
+        "category": "性理",
+        "subject": "传授心法说",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2424,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1903",
+        "season": "夏",
+        "category": "性理",
+        "subject": "坐如尸坐时习立如斋立时习说",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2425,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1903",
+        "season": "夏",
+        "category": "性理",
+        "subject": "士穷见节义论",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2426,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1903",
+        "season": "夏",
+        "category": "性理",
+        "subject": "板荡识忠臣论",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2446,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1903",
+        "season": "秋",
+        "category": "性理",
+        "subject": "匹夫不可夺志论",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2447,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1903",
+        "season": "秋",
+        "category": "性理",
+        "subject": "民无信不立论",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2448,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1903",
+        "season": "秋",
+        "category": "性理",
+        "subject": "敬者主一无适之谓说",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2449,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1903",
+        "season": "秋",
+        "category": "性理",
+        "subject": "仁者心之德爱之理说",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2470,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1903",
+        "season": "冬",
+        "category": "性理",
+        "subject": "仁者人也解",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2471,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1903",
+        "season": "冬",
+        "category": "性理",
+        "subject": "义者宜也解",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2472,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1903",
+        "season": "冬",
+        "category": "性理",
+        "subject": "见利思义论",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2473,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1903",
+        "season": "冬",
+        "category": "性理",
+        "subject": "见危授命论",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2491,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1904",
+        "season": "春",
+        "category": "性理",
+        "subject": "持志说养气说",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2492,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1904",
+        "season": "春",
+        "category": "性理",
+        "subject": "告子不动心说",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    },
+    {
+      "index": 2493,
+      "data": {
+        "library_type": "课题库",
+        "academy": "求志书院",
+        "year": "1904",
+        "season": "春",
+        "category": "性理",
+        "subject": "孟子不动心说",
+        "author": "",
+        "dynasty": ""
+      },
+      "errors": [
+        "category必须是以下之一: 经学、史学、掌故、算学、舆地、词章 (当前: 性理)"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,253 @@
+{
+  "totalFixed": 35,
+  "successCount": 35,
+  "errorCount": 0,
+  "mapping": "性理 → 经学",
+  "fixedBooks": [
+    {
+      "year": "1902",
+      "season": "春",
+      "subject": "道为天地之本论",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1902",
+      "season": "春",
+      "subject": "由象识心、徇象丧心论",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1902",
+      "season": "春",
+      "subject": "志伊尹之所志、学颜子之所学论",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1902",
+      "season": "春",
+      "subject": "正己而物正、正己而正物论",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1902",
+      "season": "夏",
+      "subject": "天即理也说",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1902",
+      "season": "夏",
+      "subject": "情者性之影说",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1902",
+      "season": "夏",
+      "subject": "礼先乐后论",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1902",
+      "season": "夏",
+      "subject": "鬼神天地之功用论",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1902",
+      "season": "秋",
+      "subject": "两不立则一不可见论",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1902",
+      "season": "秋",
+      "subject": "革而革、革而因、因而革、因而因论",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1902",
+      "season": "秋",
+      "subject": "生知安行资格亦用困知勉行功夫说",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1902",
+      "season": "秋",
+      "subject": "明三代法度通之当今然后为全儒说",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1902",
+      "season": "冬",
+      "subject": "天地万物本吾一体论",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1902",
+      "season": "冬",
+      "subject": "仁是性孝弟是用论",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1902",
+      "season": "冬",
+      "subject": "无思而无不通为圣人论",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1902",
+      "season": "冬",
+      "subject": "不有两则无一论",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1903",
+      "season": "春",
+      "subject": "《论衡·本性》引宓子贱、漆雕开、公孙尼子之徒言性有善有恶说",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1903",
+      "season": "春",
+      "subject": "孟子言性善荀子言性恶说",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1903",
+      "season": "春",
+      "subject": "扬子《法言》修身言性善恶混说",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1903",
+      "season": "春",
+      "subject": "《申鉴·杂言下》《韩昌黎集·原性》并言性有上中下三品说",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1903",
+      "season": "夏",
+      "subject": "传授心法说",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1903",
+      "season": "夏",
+      "subject": "坐如尸坐时习立如斋立时习说",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1903",
+      "season": "夏",
+      "subject": "士穷见节义论",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1903",
+      "season": "夏",
+      "subject": "板荡识忠臣论",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1903",
+      "season": "秋",
+      "subject": "匹夫不可夺志论",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1903",
+      "season": "秋",
+      "subject": "民无信不立论",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1903",
+      "season": "秋",
+      "subject": "敬者主一无适之谓说",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1903",
+      "season": "秋",
+      "subject": "仁者心之德爱之理说",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1903",
+      "season": "冬",
+      "subject": "仁者人也解",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1903",
+      "season": "冬",
+      "subject": "义者宜也解",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1903",
+      "season": "冬",
+      "subject": "见利思义论",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1903",
+      "season": "冬",
+      "subject": "见危授命论",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1904",
+      "season": "春",
+      "subject": "持志说养气说",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1904",
+      "season": "春",
+      "subject": "告子不动心说",
+      "original_category": "性理",
+      "new_category": "经学"
+    },
+    {
+      "year": "1904",
+      "season": "春",
+      "subject": "孟子不动心说",
+      "original_category": "性理",
+      "new_category": "经学"
+    }
+  ]
+}
