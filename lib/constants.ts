@@ -10,6 +10,7 @@ export const DYNASTIES: Dynasty[] = [
   '宋元',
   '明清',
   '近现代',
+  '清',
   '未知',
 ];
 
@@ -21,3 +22,19 @@ export const CATEGORY_DESCRIPTIONS: Record<Category, string> = {
   舆地: '地理沿革及山川地貌',
   词章: '诗词文章及文学创作',
 };
+
+// 求志书院相关常量
+export const ACADEMIES = ['求志书院'] as const;
+export type Academy = typeof ACADEMIES[number];
+
+export const SEASONS = ['春', '夏', '秋', '冬'] as const;
+export type Season = typeof SEASONS[number];
+
+export const LIBRARY_TYPES = ['课题库', '课艺库'] as const;
+export type LibraryType = typeof LIBRARY_TYPES[number];
+
+// 年份范围 (1876-1904)
+export const YEAR_RANGE = {
+  min: 1876,
+  max: 1904,
+} as const;

@@ -23,16 +23,31 @@ export async function GET(request: NextRequest) {
 
     // 如果指定了library_type但没有academy，返回该类型下的书院
     if (libraryType && !academy) {
-      const { data: academies, error } = await supabase
-        .from('books')
-        .select('academy, library_type')
-        .eq('library_type', libraryType)
-        .not('academy', 'is', null)
-        .order('academy');
+      let allAcademies: any[] = [];
+      let offset = 0;
+      const batchSize = 1000;
 
-      if (error) throw error;
+      while (true) {
+        const { data: batch, error} = await supabase
+          .from('books')
+          .select('academy, library_type')
+          .eq('library_type', libraryType)
+          .not('academy', 'is', null)
+          .order('academy')
+          .range(offset, offset + batchSize - 1);
 
-      const academyCounts = academies.reduce((acc: Record<string, number>, book) => {
+        if (error) throw error;
+
+        if (!batch || batch.length === 0) break;
+
+        allAcademies = allAcademies.concat(batch);
+
+        if (batch.length < batchSize) break;
+
+        offset += batchSize;
+      }
+
+      const academyCounts = allAcademies.reduce((acc: Record<string, number>, book) => {
         const name = book.academy;
         if (name) {
           acc[name] = (acc[name] || 0) + 1;
@@ -55,16 +70,31 @@ export async function GET(request: NextRequest) {
     // 如果指定了具体的过滤条件，只返回该层级的子级
     if (academy && !year) {
       // 返回指定书院下的年份
-      const { data: years, error: yearError } = await supabase
-        .from('books')
-        .select('year')
-        .eq('academy', academy)
-        .not('year', 'is', null)
-        .order('year');
+      let allYears: any[] = [];
+      let offset = 0;
+      const batchSize = 1000;
 
-      if (yearError) throw yearError;
+      while (true) {
+        const { data: batch, error: yearError } = await supabase
+          .from('books')
+          .select('year')
+          .eq('academy', academy)
+          .not('year', 'is', null)
+          .order('year')
+          .range(offset, offset + batchSize - 1);
 
-      const yearCounts = years.reduce((acc: Record<string, number>, book) => {
+        if (yearError) throw yearError;
+
+        if (!batch || batch.length === 0) break;
+
+        allYears = allYears.concat(batch);
+
+        if (batch.length < batchSize) break;
+
+        offset += batchSize;
+      }
+
+      const yearCounts = allYears.reduce((acc: Record<string, number>, book) => {
         if (book.year) {
           acc[book.year] = (acc[book.year] || 0) + 1;
         }
@@ -90,7 +120,8 @@ export async function GET(request: NextRequest) {
         .eq('academy', academy)
         .eq('year', year)
         .not('season', 'is', null)
-        .order('season');
+        .order('season')
+        .limit(10000);
 
       if (seasonError) throw seasonError;
 
@@ -124,7 +155,8 @@ export async function GET(request: NextRequest) {
         .eq('year', year)
         .eq('season', season)
         .not('category', 'is', null)
-        .order('category');
+        .order('category')
+        .limit(10000);
 
       if (categoryError) throw categoryError;
 
@@ -154,7 +186,8 @@ export async function GET(request: NextRequest) {
         .eq('season', season)
         .eq('category', category)
         .not('subject', 'is', null)
-        .order('subject');
+        .order('subject')
+        .limit(10000);
 
       if (subjectError) throw subjectError;
 
@@ -176,17 +209,35 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(subjectNodes);
     }
 
-    // 默认返回顶级结构：书院列表
-    const { data: academies, error } = await supabase
-      .from('books')
-      .select('academy, library_type')
-      .not('academy', 'is', null)
-      .order('academy');
+    // 默认返回顶级结构:书院列表
+    // 使用分页查询获取所有数据
+    let allAcademies: any[] = [];
+    let offset = 0;
+    const batchSize = 1000;
 
-    if (error) throw error;
+    while (true) {
+      const { data: batch, error } = await supabase
+        .from('books')
+        .select('academy, library_type')
+        .not('academy', 'is', null)
+        .order('academy')
+        .range(offset, offset + batchSize - 1);
+
+      if (error) throw error;
+
+      if (!batch || batch.length === 0) break;
+
+      allAcademies = allAcademies.concat(batch);
+
+      if (batch.length < batchSize) break;
+
+      offset += batchSize;
+    }
+
+    console.log(`[Hierarchy API] 查询到 ${allAcademies.length} 条数据`);
 
     // 统计每个书院的课题库和课艺库数量
-    const academyStats = academies.reduce((acc: Record<string, any>, book) => {
+    const academyStats = allAcademies.reduce((acc: Record<string, any>, book) => {
       const name = book.academy;
       if (!name) return acc;
 

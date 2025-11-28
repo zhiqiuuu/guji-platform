@@ -25,7 +25,29 @@ export default function UploadPage() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // 检查文件大小 (50MB)
+      const maxSize = 50 * 1024 * 1024;
+      if (file.size > maxSize) {
+        alert(`文件太大!最大支持 50MB,当前文件大小: ${(file.size / 1024 / 1024).toFixed(2)}MB`);
+        e.target.value = ''; // 清空input
+        return;
+      }
+
+      // 检查文件类型
+      const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+      const isImage = file.type.startsWith('image/');
+      if (!isPdf && !isImage) {
+        alert('只支持 PDF 和图片文件!');
+        e.target.value = ''; // 清空input
+        return;
+      }
+
       setSelectedFile(file);
+      console.log('选择文件:', {
+        name: file.name,
+        type: file.type,
+        size: `${(file.size / 1024 / 1024).toFixed(2)}MB`,
+      });
     }
   };
 
@@ -65,7 +87,10 @@ export default function UploadPage() {
       if (!uploadResponse.ok) {
         const error = await uploadResponse.json();
         console.error('文件上传失败:', error);
-        alert(`文件上传失败: ${error.error || '未知错误'}`);
+        const errorMsg = error.details
+          ? `${error.error}\n详情: ${error.details}`
+          : error.error || '未知错误';
+        alert(`文件上传失败: ${errorMsg}`);
         setLoading(false);
         return;
       }
@@ -312,8 +337,13 @@ export default function UploadPage() {
                 <p className="text-sm text-gray-600 mb-2">
                   {selectedFile ? `已选择：${selectedFile.name}` : '点击上传或拖拽文件到此处'}
                 </p>
+                {selectedFile && (
+                  <p className="text-xs text-green-600 mb-2">
+                    文件大小: {(selectedFile.size / 1024 / 1024).toFixed(2)}MB
+                  </p>
+                )}
                 <p className="text-xs text-gray-500">
-                  支持 PDF 或图片文件
+                  支持 PDF 或图片文件 (最大 50MB)
                 </p>
                 <input
                   type="file"

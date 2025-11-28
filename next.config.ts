@@ -8,10 +8,8 @@ const nextConfig: NextConfig = {
     // 暂时忽略构建时的类型错误
     ignoreBuildErrors: true,
   },
-  experimental: {
-    // 排除 OCR 相关的包
-    serverComponentsExternalPackages: ['pdfjs-dist', 'tesseract.js', 'canvas'],
-  },
+  // 排除 OCR 相关的包 (已更新为新的配置方式)
+  serverExternalPackages: ['pdfjs-dist', 'tesseract.js', 'canvas'],
   webpack: (config, { isServer }) => {
     // 禁止在服务端打包 pdfjs-dist 和 tesseract.js
     if (isServer) {

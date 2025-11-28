@@ -19,6 +19,8 @@ export default function BooksPage() {
     subject?: string;
   }>({});
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     async function fetchBooks() {
@@ -51,106 +53,174 @@ export default function BooksPage() {
     }
 
     fetchBooks();
+    setCurrentPage(1); // 重置到第一页
   }, [searchQuery, filters]);
 
+  // 计算分页数据
+  const totalPages = Math.ceil(books.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentBooks = books.slice(startIndex, endIndex);
+
   return (
-    <div className="container px-4 py-8 mx-auto max-w-7xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">书库</h1>
-        <p className="text-gray-600">按层级浏览课题库和课艺库</p>
+    <div className="min-h-screen bg-stone-50">
+      {/* 页面标题 */}
+      <div className="border-b border-stone-200 bg-white">
+        <div className="container px-6 py-5 mx-auto max-w-[1600px]">
+          <h1 className="text-xl font-serif text-stone-900 tracking-wide mb-1">典藏书库</h1>
+          <p className="text-xs text-stone-600 tracking-wide">浏览课题库与课艺库</p>
+        </div>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-8">
-        {/* Hierarchy Navigation Sidebar */}
-        <aside className="lg:w-72 flex-shrink-0">
-          <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg p-4 border-2 border-amber-200 h-[calc(100vh-200px)]">
-            <h3 className="font-bold text-gray-900 text-lg mb-4 flex items-center gap-2">
-              <Search className="h-5 w-5 text-amber-700" />
-              层级导航
-            </h3>
-            <HierarchyNavigation
-              selectedFilters={filters}
-              onFilterChange={setFilters}
-            />
-          </div>
-        </aside>
-
-        {/* Main Content */}
-        <div className="flex-1 min-h-[500px]">
-          {/* Search Bar */}
-          <div className="mb-6">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <Input
-                type="search"
-                placeholder="搜索书名、作者、关键词..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-          </div>
-
-          {/* Active Filters Display */}
-          {Object.keys(filters).length > 0 && (
-            <div className="mb-4 flex flex-wrap gap-2">
-              {filters.libraryType && (
-                <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm">
-                  {filters.libraryType}
-                </span>
-              )}
-              {filters.academy && (
-                <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                  {filters.academy}
-                </span>
-              )}
-              {filters.year && (
-                <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
-                  {filters.year}年
-                </span>
-              )}
-              {filters.season && (
-                <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">
-                  {filters.season}
-                </span>
-              )}
-              {filters.category && (
-                <span className="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-sm">
-                  {filters.category}
-                </span>
-              )}
-              {filters.subject && (
-                <span className="px-3 py-1 bg-pink-100 text-pink-800 rounded-full text-sm">
-                  {filters.subject}
-                </span>
-              )}
-            </div>
-          )}
-
-          {/* Books Grid */}
-          {loading ? (
-            <div className="text-center py-12">
-              <p className="text-gray-600">加载中...</p>
-            </div>
-          ) : books.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-600">暂无古籍</p>
-              <p className="text-sm text-gray-500 mt-2">
-                尝试调整筛选条件或上传新的古籍
-              </p>
-            </div>
-          ) : (
-            <>
-              <p className="text-sm text-gray-600 mb-4">
-                共找到 {books.length} 部古籍
-              </p>
-              <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {books.map((book) => (
-                  <BookCard key={book.id} book={book} />
-                ))}
+      <div className="container px-6 py-5 mx-auto max-w-[1600px]">
+        <div className="flex flex-col lg:flex-row gap-4">
+          {/* 层级导航侧边栏 */}
+          <aside className="lg:w-64 flex-shrink-0">
+            <div className="bg-white rounded shadow-sm border border-stone-200 overflow-hidden h-[calc(100vh-160px)] flex flex-col sticky top-4">
+              <div className="bg-stone-100 px-4 py-2.5 border-b border-stone-200">
+                <h3 className="font-serif text-stone-800 text-sm tracking-wide">层级导航</h3>
               </div>
-            </>
-          )}
+              <div className="flex-1 overflow-hidden">
+                <HierarchyNavigation
+                  selectedFilters={filters}
+                  onFilterChange={setFilters}
+                />
+              </div>
+            </div>
+          </aside>
+
+          {/* 主内容区域 */}
+          <div className="flex-1 min-h-[500px]">
+            {/* 搜索栏 */}
+            <div className="mb-3">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-stone-400" />
+                <Input
+                  type="search"
+                  placeholder="搜索书名、作者、关键词..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 bg-white border-stone-300 focus:border-stone-400 focus:ring-stone-400"
+                />
+              </div>
+            </div>
+
+            {/* 筛选标签 */}
+            {Object.keys(filters).length > 0 && (
+              <div className="mb-3 flex flex-wrap gap-1.5">
+                {filters.libraryType && (
+                  <span className="px-2.5 py-1 bg-stone-100 text-stone-700 border border-stone-200 rounded text-xs">
+                    {filters.libraryType}
+                  </span>
+                )}
+                {filters.academy && (
+                  <span className="px-2.5 py-1 bg-stone-100 text-stone-700 border border-stone-200 rounded text-xs">
+                    {filters.academy}
+                  </span>
+                )}
+                {filters.year && (
+                  <span className="px-2.5 py-1 bg-stone-100 text-stone-700 border border-stone-200 rounded text-xs">
+                    {filters.year}年
+                  </span>
+                )}
+                {filters.season && (
+                  <span className="px-2.5 py-1 bg-stone-100 text-stone-700 border border-stone-200 rounded text-xs">
+                    {filters.season}
+                  </span>
+                )}
+                {filters.category && (
+                  <span className="px-2.5 py-1 bg-stone-100 text-stone-700 border border-stone-200 rounded text-xs">
+                    {filters.category}
+                  </span>
+                )}
+                {filters.subject && (
+                  <span className="px-2.5 py-1 bg-stone-100 text-stone-700 border border-stone-200 rounded text-xs">
+                    {filters.subject}
+                  </span>
+                )}
+              </div>
+            )}
+
+            {/* 书籍列表 */}
+            {loading ? (
+              <div className="text-center py-16">
+                <p className="text-amber-800/60 text-sm tracking-wide">加载中...</p>
+              </div>
+            ) : books.length === 0 ? (
+              <div className="text-center py-16">
+                <p className="text-amber-800/60 text-sm tracking-wide">暂无古籍</p>
+                <p className="text-xs text-amber-700/50 mt-2 tracking-wide">
+                  尝试调整筛选条件或上传新的古籍
+                </p>
+              </div>
+            ) : (
+              <>
+                <p className="text-xs text-stone-600 mb-4 px-6 tracking-wide">
+                  共 {books.length} 部 · 第 {currentPage} / {totalPages} 页
+                </p>
+                <div className="bg-white rounded shadow-sm border border-stone-200 overflow-hidden">
+                  {currentBooks.map((book) => (
+                    <BookCard key={book.id} book={book} filters={filters} />
+                  ))}
+                </div>
+
+                {/* 分页控件 */}
+                {totalPages > 1 && (
+                  <div className="mt-6 flex items-center justify-center gap-2">
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                      disabled={currentPage === 1}
+                      className="px-4 py-2 border border-stone-300 rounded text-sm text-stone-700 hover:bg-stone-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}
+                    >
+                      上一页
+                    </button>
+
+                    <div className="flex gap-1">
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                        // 显示首页、末页、当前页及其前后各2页
+                        if (
+                          page === 1 ||
+                          page === totalPages ||
+                          (page >= currentPage - 2 && page <= currentPage + 2)
+                        ) {
+                          return (
+                            <button
+                              key={page}
+                              onClick={() => setCurrentPage(page)}
+                              className={`w-10 h-10 rounded text-sm transition-colors ${
+                                currentPage === page
+                                  ? 'bg-amber-700 text-white'
+                                  : 'border border-stone-300 text-stone-700 hover:bg-stone-50'
+                              }`}
+                              style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}
+                            >
+                              {page}
+                            </button>
+                          );
+                        } else if (
+                          page === currentPage - 3 ||
+                          page === currentPage + 3
+                        ) {
+                          return <span key={page} className="w-10 h-10 flex items-center justify-center text-stone-400">...</span>;
+                        }
+                        return null;
+                      })}
+                    </div>
+
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                      disabled={currentPage === totalPages}
+                      className="px-4 py-2 border border-stone-300 rounded text-sm text-stone-700 hover:bg-stone-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}
+                    >
+                      下一页
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -3,13 +3,33 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Book } from '@/types';
-import { PdfReader } from '@/components/books/pdf-reader';
-import { TextReader } from '@/components/books/text-reader';
+import { PdfViewerSimple } from '@/components/books/pdf-viewer-simple';
+import { ChapterList, Chapter } from '@/components/books/chapter-list';
+import { TranscriptionPanel } from '@/components/books/transcription-panel';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, BookOpen, FileText, Image, BookMarked, Heart } from 'lucide-react';
+import {
+  ArrowLeft,
+  BookOpen,
+  Heart,
+  ChevronLeft,
+  ChevronRight,
+  Maximize,
+  Minimize,
+  PanelLeftClose,
+  PanelRightClose,
+  PanelLeft,
+  PanelRight,
+} from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { TextSelectionToolbar } from '@/components/ai/text-selection-toolbar';
+import { cn } from '@/lib/utils';
 
-type ViewMode = 'pdf' | 'text';
+type AdjacentBook = {
+  id: string;
+  title: string;
+  author: string;
+  category: string;
+};
 
 export default function BookDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -18,9 +38,22 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [bookId, setBookId] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<ViewMode>('pdf');
   const [inBookshelf, setInBookshelf] = useState(false);
   const [bookshelfLoading, setBookshelfLoading] = useState(false);
+  const [prevBook, setPrevBook] = useState<AdjacentBook | null>(null);
+  const [nextBook, setNextBook] = useState<AdjacentBook | null>(null);
+
+  // 三栏布局状态
+  const [showLeftPanel, setShowLeftPanel] = useState(true);
+  const [showRightPanel, setShowRightPanel] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // PDF阅读状态
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+
+  // 模拟章节数据 (实际应从API获取)
+  const [chapters, setChapters] = useState<Chapter[]>([]);
 
   useEffect(() => {
     params.then(({ id }) => setBookId(id));
@@ -29,6 +62,7 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
   useEffect(() => {
     if (bookId) {
       fetchBook();
+      fetchAdjacentBooks();
       if (user) {
         checkBookshelf();
       }
@@ -49,15 +83,44 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
       const data = await response.json();
       setBook(data);
 
-      // 如果有OCR文本,默认显示文本模式
-      if (data.full_text && data.full_text.trim()) {
-        setViewMode('text');
+      // 获取真实章节数据
+      if (data.file_type === 'pdf') {
+        fetchChapters();
       }
     } catch (err) {
       console.error('Error fetching book:', err);
       setError(err instanceof Error ? err.message : '加载失败');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchAdjacentBooks = async () => {
+    if (!bookId) return;
+
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const apiParams = new URLSearchParams();
+
+      if (urlParams.get('library_type')) apiParams.append('library_type', urlParams.get('library_type')!);
+      if (urlParams.get('academy')) apiParams.append('academy', urlParams.get('academy')!);
+      if (urlParams.get('year')) apiParams.append('year', urlParams.get('year')!);
+      if (urlParams.get('season')) apiParams.append('season', urlParams.get('season')!);
+      if (urlParams.get('category')) apiParams.append('category', urlParams.get('category')!);
+      if (urlParams.get('subject')) apiParams.append('subject', urlParams.get('subject')!);
+
+      const queryString = apiParams.toString();
+      const apiUrl = `/api/books/${bookId}/adjacent${queryString ? `?${queryString}` : ''}`;
+
+      const response = await fetch(apiUrl);
+
+      if (response.ok) {
+        const data = await response.json();
+        setPrevBook(data.prev);
+        setNextBook(data.next);
+      }
+    } catch (err) {
+      console.error('Error fetching adjacent books:', err);
     }
   };
 
@@ -85,7 +148,6 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
       setBookshelfLoading(true);
 
       if (inBookshelf) {
-        // 从书架移除
         const checkResponse = await fetch(`/api/bookshelf/check/${bookId}`);
         const checkData = await checkResponse.json();
 
@@ -101,7 +163,6 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
           setInBookshelf(false);
         }
       } else {
-        // 添加到书架
         const response = await fetch('/api/bookshelf', {
           method: 'POST',
           headers: {
@@ -128,6 +189,39 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
     }
   };
 
+  const fetchChapters = async () => {
+    if (!bookId) return;
+
+    try {
+      const response = await fetch(`/api/books/${bookId}/chapters`);
+      if (response.ok) {
+        const data = await response.json();
+        setChapters(data.chapters || []);
+      }
+    } catch (err) {
+      console.error('Error fetching chapters:', err);
+    }
+  };
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
+  };
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -151,11 +245,12 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
   const canViewPdf = book.file_type === 'pdf';
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* 页头 */}
-      <div className="bg-white border-b shadow-sm p-4">
-        <div className="container mx-auto flex items-center justify-between gap-4">
-          <div className="flex items-center gap-4 flex-1">
+    <div className="h-screen flex flex-col">
+      {/* 顶部工具栏 */}
+      <div className="bg-white border-b shadow-sm p-3 flex-shrink-0">
+        <div className="flex items-center justify-between gap-4">
+          {/* 左侧: 返回 + 书籍信息 */}
+          <div className="flex items-center gap-3 flex-1 min-w-0">
             <Button
               variant="outline"
               size="sm"
@@ -164,162 +259,176 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
               <ArrowLeft className="h-4 w-4 mr-2" />
               返回
             </Button>
-            <div className="flex items-center gap-3 flex-1">
-              <BookOpen className="h-6 w-6 text-amber-600" />
-              <div className="flex-1">
-                <h1 className="text-xl font-bold text-gray-900">{book.title}</h1>
-                <p className="text-sm text-gray-600">
-                  {book.author} · {book.dynasty} · {book.category}
+
+            <div className="flex items-center gap-2 flex-1 min-w-0">
+              <BookOpen className="h-5 w-5 text-amber-600 flex-shrink-0" />
+              <div className="flex-1 min-w-0">
+                <h1 className="text-lg font-bold text-gray-900 truncate">{book.title}</h1>
+                <p className="text-xs text-gray-600 truncate">
+                  {book.author} · {book.dynasty}
                 </p>
               </div>
-              {user && (
-                <Button
-                  variant={inBookshelf ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={toggleBookshelf}
-                  disabled={bookshelfLoading}
-                  className="gap-2"
-                >
-                  {inBookshelf ? (
-                    <>
-                      <Heart className="h-4 w-4 fill-current" />
-                      已收藏
-                    </>
-                  ) : (
-                    <>
-                      <Heart className="h-4 w-4" />
-                      收藏
-                    </>
-                  )}
-                </Button>
-              )}
             </div>
           </div>
 
-          {/* 视图模式切换 */}
-          {(hasOCRText || canViewPdf) && (
-            <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
-              {canViewPdf && (
-                <Button
-                  variant={viewMode === 'pdf' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setViewMode('pdf')}
-                  className={viewMode === 'pdf' ? 'bg-white shadow-sm' : ''}
-                >
-                  <Image className="h-4 w-4 mr-2" />
-                  影印版
-                </Button>
-              )}
-              {hasOCRText && (
-                <Button
-                  variant={viewMode === 'text' ? 'default' : 'ghost'}
-                  size="sm"
-                  onClick={() => setViewMode('text')}
-                  className={viewMode === 'text' ? 'bg-white shadow-sm' : ''}
-                >
-                  <FileText className="h-4 w-4 mr-2" />
-                  文本版
-                </Button>
-              )}
-            </div>
-          )}
+          {/* 右侧: 工具按钮 */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {/* 面板切换 */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowLeftPanel(!showLeftPanel)}
+              title={showLeftPanel ? '隐藏目录' : '显示目录'}
+            >
+              {showLeftPanel ? <PanelLeftClose className="h-4 w-4" /> : <PanelLeft className="h-4 w-4" />}
+            </Button>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowRightPanel(!showRightPanel)}
+              title={showRightPanel ? '隐藏释文' : '显示释文'}
+            >
+              {showRightPanel ? <PanelRightClose className="h-4 w-4" /> : <PanelRight className="h-4 w-4" />}
+            </Button>
+
+            {/* 全屏 */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={toggleFullscreen}
+            >
+              {isFullscreen ? <Minimize className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
+            </Button>
+
+            {/* 收藏 */}
+            {user && (
+              <Button
+                variant={inBookshelf ? 'default' : 'outline'}
+                size="sm"
+                onClick={toggleBookshelf}
+                disabled={bookshelfLoading}
+                className="gap-2"
+              >
+                {inBookshelf ? (
+                  <>
+                    <Heart className="h-4 w-4 fill-current" />
+                    已收藏
+                  </>
+                ) : (
+                  <>
+                    <Heart className="h-4 w-4" />
+                    收藏
+                  </>
+                )}
+              </Button>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* 阅读器 */}
-      <div className="flex-1">
-        {viewMode === 'text' && hasOCRText ? (
-          <TextReader text={book.full_text} bookId={book.id} />
-        ) : viewMode === 'pdf' && canViewPdf ? (
-          <PdfReader fileUrl={book.file_url} bookId={book.id} />
-        ) : (
-          <div className="flex items-center justify-center h-full">
-            <div className="max-w-4xl mx-auto p-8">
-              {!canViewPdf && !hasOCRText ? (
-                <>
-                  {/* 显示书籍信息 */}
-                  <div className="bg-white rounded-lg shadow-sm border p-6">
-                    <div className="space-y-4">
-                      <div>
-                        <h2 className="text-2xl font-bold text-gray-900 mb-2">{book.title}</h2>
-                        <div className="flex gap-4 text-sm text-gray-600">
-                          <span>作者: {book.author}</span>
-                          <span>朝代: {book.dynasty}</span>
-                          <span>类别: {book.category}</span>
-                        </div>
-                      </div>
+      {/* 主内容区 - 三栏布局 */}
+      <div className="flex-1 flex overflow-hidden relative">
+        {/* 左侧目录栏 */}
+        {showLeftPanel && (
+          <div className="w-64 border-r bg-white flex-shrink-0 overflow-hidden">
+            <ChapterList
+              chapters={chapters}
+              currentPage={currentPage}
+              onChapterClick={(page) => setCurrentPage(page)}
+            />
+          </div>
+        )}
 
-                      {book.description && (
-                        <div className="border-t pt-4">
-                          <h3 className="text-lg font-semibold text-gray-800 mb-2">简介</h3>
-                          <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
-                            {book.description}
-                          </p>
-                        </div>
-                      )}
-
-                      {book.custom_hierarchy && (
-                        <div className="border-t pt-4">
-                          <h3 className="text-lg font-semibold text-gray-800 mb-2">分类信息</h3>
-                          <div className="grid grid-cols-2 gap-3 text-sm">
-                            {book.custom_hierarchy.level1 && (
-                              <div>
-                                <span className="text-gray-500">书院:</span>
-                                <span className="ml-2 text-gray-700">{book.custom_hierarchy.level1}</span>
-                              </div>
-                            )}
-                            {book.custom_hierarchy.level2 && (
-                              <div>
-                                <span className="text-gray-500">年份:</span>
-                                <span className="ml-2 text-gray-700">{book.custom_hierarchy.level2}</span>
-                              </div>
-                            )}
-                            {book.custom_hierarchy.level3 && (
-                              <div>
-                                <span className="text-gray-500">季节:</span>
-                                <span className="ml-2 text-gray-700">{book.custom_hierarchy.level3}</span>
-                              </div>
-                            )}
-                            {book.custom_hierarchy.level4 && (
-                              <div>
-                                <span className="text-gray-500">类别:</span>
-                                <span className="ml-2 text-gray-700">{book.custom_hierarchy.level4}</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
-
-                      {book.file_url && (
-                        <div className="border-t pt-4">
-                          <Button onClick={() => window.open(book.file_url, '_blank')} className="w-full">
-                            下载原文件
-                          </Button>
-                        </div>
-                      )}
-
-                      {!book.file_url && !book.description && (
-                        <p className="text-gray-500 text-center py-4">
-                          暂无更多信息
-                        </p>
-                      )}
-                    </div>
+        {/* 中间阅读区 */}
+        <div className="flex-1 relative overflow-hidden">
+          {canViewPdf ? (
+            <PdfViewerSimple
+              fileUrl={book.file_url}
+              bookId={book.id}
+              currentPage={currentPage}
+              onPageChange={setCurrentPage}
+              onTotalPagesChange={setTotalPages}
+            />
+          ) : (
+            <div className="flex items-center justify-center h-full bg-gray-50">
+              <div className="max-w-2xl mx-auto p-8 text-center">
+                <div className="bg-white rounded-lg shadow-sm border p-6">
+                  <h2 className="text-xl font-bold text-gray-900 mb-2">{book.title}</h2>
+                  <div className="flex gap-4 text-sm text-gray-600 justify-center mb-4">
+                    <span>作者: {book.author}</span>
+                    <span>朝代: {book.dynasty}</span>
                   </div>
-                </>
-              ) : (
-                <>
-                  <p className="text-gray-600 mb-4">
-                    {viewMode === 'text' ? '此书籍还未进行OCR识别' : '无法显示PDF'}
-                  </p>
-                  {book.ocr_status === 'pending' && (
-                    <p className="text-sm text-gray-500">OCR识别中,请稍后查看文本版本</p>
+                  {book.description && (
+                    <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+                      {book.description}
+                    </p>
                   )}
-                </>
-              )}
+                  {!book.description && (
+                    <p className="text-gray-500">暂无详细信息</p>
+                  )}
+                </div>
+              </div>
             </div>
+          )}
+
+          {/* 上一篇/下一篇按钮 - 简洁版 */}
+          {prevBook && (
+            <button
+              onClick={() => {
+                const currentParams = new URLSearchParams(window.location.search);
+                const targetUrl = `/books/${prevBook.id}${currentParams.toString() ? `?${currentParams.toString()}` : ''}`;
+                router.push(targetUrl);
+              }}
+              className="fixed left-2 top-1/2 -translate-y-1/2 z-50 group"
+              title={prevBook.title}
+            >
+              <div className="bg-amber-600 hover:bg-amber-700 text-white rounded-r-lg shadow-lg px-3 py-8 transition-all duration-200 group-hover:px-4">
+                <div className="flex flex-col items-center gap-2">
+                  <ChevronLeft className="h-6 w-6" />
+                  <div className="writing-mode-vertical text-xs font-medium whitespace-nowrap overflow-hidden max-h-32">
+                    {prevBook.title.slice(0, 15)}{prevBook.title.length > 15 ? '...' : ''}
+                  </div>
+                </div>
+              </div>
+            </button>
+          )}
+
+          {nextBook && (
+            <button
+              onClick={() => {
+                const currentParams = new URLSearchParams(window.location.search);
+                const targetUrl = `/books/${nextBook.id}${currentParams.toString() ? `?${currentParams.toString()}` : ''}`;
+                router.push(targetUrl);
+              }}
+              className="fixed right-2 top-1/2 -translate-y-1/2 z-50 group"
+              title={nextBook.title}
+            >
+              <div className="bg-amber-600 hover:bg-amber-700 text-white rounded-l-lg shadow-lg px-3 py-8 transition-all duration-200 group-hover:px-4">
+                <div className="flex flex-col items-center gap-2">
+                  <ChevronRight className="h-6 w-6" />
+                  <div className="writing-mode-vertical text-xs font-medium whitespace-nowrap overflow-hidden max-h-32">
+                    {nextBook.title.slice(0, 15)}{nextBook.title.length > 15 ? '...' : ''}
+                  </div>
+                </div>
+              </div>
+            </button>
+          )}
+        </div>
+
+        {/* 右侧释文栏 */}
+        {showRightPanel && hasOCRText && (
+          <div className="w-96 border-l bg-white flex-shrink-0 overflow-hidden">
+            <TranscriptionPanel
+              text={book.full_text}
+              currentPage={currentPage}
+            />
           </div>
         )}
       </div>
+
+      {/* AI文本选择工具栏 */}
+      <TextSelectionToolbar />
     </div>
   );
 }

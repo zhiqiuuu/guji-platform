@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ChevronDown, ChevronRight, BookOpen, Library, Hash } from 'lucide-react';
+import { ChevronDown, ChevronRight, BookOpen, Library, Hash, Loader2 } from 'lucide-react';
 import { LibraryType } from '@/types';
 import { cn } from '@/lib/utils';
 
@@ -35,6 +35,7 @@ export function HierarchyNavigation({
   const [loading, setLoading] = useState(true);
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
   const [cache, setCache] = useState<Map<string, HierarchyNode[]>>(new Map());
+  const [loadingNodes, setLoadingNodes] = useState<Set<string>>(new Set());
 
   // 初始加载顶级层级
   useEffect(() => {
@@ -112,7 +113,6 @@ export function HierarchyNavigation({
 
   const toggleNode = async (nodeId: string, node: HierarchyNode) => {
     const isExpanded = expandedNodes.has(nodeId);
-    console.log('[toggleNode] 节点ID:', nodeId, '层级:', node.level, '是否展开:', isExpanded, '当前筛选器:', selectedFilters);
 
     if (isExpanded) {
       // 如果节点已展开，则直接收起
@@ -124,90 +124,83 @@ export function HierarchyNavigation({
       return;
     }
 
-    // 如果节点未展开，需要加载子节点并展开
-    let children: HierarchyNode[] = [];
-
-    if (node.level === 2) {
-      // 点击书院时，获取年份数据
-      children = await fetchHierarchy({ academy: node.value });
-      console.log('[toggleNode] 书院节点获取到年份数据:', children.length, '个');
-    } else if (node.level === 3) {
-      // 点击年份时，获取季节数据
-      const academy = selectedFilters.academy || getNodeAcademy(node) || '';
-      children = await fetchHierarchy({
-        academy,
-        year: node.value
-      });
-      console.log('[toggleNode] 年份节点获取到季节数据:', children.length, '个', children);
-    } else if (node.level === 4) {
-      // 点击季节时，获取类别数据
-      const academy = selectedFilters.academy || getNodeAcademy(node) || '';
-      const year = selectedFilters.year || getNodeYear(node) || '';
-      console.log('[toggleNode] 季节节点参数 - academy:', academy, 'year:', year, 'season:', node.value);
-
-      children = await fetchHierarchy({
-        academy,
-        year,
-        season: node.value
-      });
-      console.log('[toggleNode] 季节节点获取到类别数据:', children.length, '个', children);
-    } else if (node.level === 5) {
-      // 点击类别时，获取题目数据
-      const academy = selectedFilters.academy || getNodeAcademy(node) || '';
-      const year = selectedFilters.year || getNodeYear(node) || '';
-      const season = selectedFilters.season || getNodeSeason(node) || '';
-
-      console.log('[toggleNode] 类别节点参数 - academy:', academy, 'year:', year, 'season:', season, 'category:', node.value);
-
-      children = await fetchHierarchy({
-        academy,
-        year,
-        season,
-        category: node.value
-      });
-      console.log('[toggleNode] 类别节点获取到题目数据:', children.length, '个', children);
-    } else {
-      // 节点已经有 children，只是展开
-      children = node.children || [];
+    // 如果已经有children,直接展开不需要加载
+    if (node.children && node.children.length > 0) {
+      setExpandedNodes(prev => new Set(prev).add(nodeId));
+      return;
     }
 
-    // 更新层级结构
-    const updatedNode = { ...node, children };
-    console.log('[toggleNode] 更新节点:', nodeId, 'children数量:', children.length);
-    updateNodeInHierarchy(nodeId, updatedNode);
+    // 标记节点为加载中
+    setLoadingNodes(prev => new Set(prev).add(nodeId));
 
-    // 展开当前节点和所有子节点
-    setExpandedNodes(prev => {
-      const next = new Set(prev);
-      next.add(nodeId);
-      // 自动展开所有子节点
-      children.forEach(child => next.add(child.id));
-      console.log('[toggleNode] 展开节点:', nodeId, '子节点:', children.map(c => c.id));
-      return next;
-    });
+    try {
+      // 如果节点未展开，需要加载子节点并展开
+      let children: HierarchyNode[] = [];
+
+      if (node.level === 2) {
+        // 点击书院时，获取年份数据
+        children = await fetchHierarchy({ academy: node.value });
+      } else if (node.level === 3) {
+        // 点击年份时，获取季节数据
+        const academy = selectedFilters.academy || getNodeAcademy(node) || '';
+        children = await fetchHierarchy({
+          academy,
+          year: node.value
+        });
+      } else if (node.level === 4) {
+        // 点击季节时，获取类别数据
+        const academy = selectedFilters.academy || getNodeAcademy(node) || '';
+        const year = selectedFilters.year || getNodeYear(node) || '';
+
+        children = await fetchHierarchy({
+          academy,
+          year,
+          season: node.value
+        });
+      } else if (node.level === 5) {
+        // 点击类别时，获取题目数据
+        const academy = selectedFilters.academy || getNodeAcademy(node) || '';
+        const year = selectedFilters.year || getNodeYear(node) || '';
+        const season = selectedFilters.season || getNodeSeason(node) || '';
+
+        children = await fetchHierarchy({
+          academy,
+          year,
+          season,
+          category: node.value
+        });
+      }
+
+      // 更新层级结构
+      const updatedNode = { ...node, children };
+      updateNodeInHierarchy(nodeId, updatedNode);
+
+      // 展开当前节点(不自动展开子节点,避免卡顿)
+      setExpandedNodes(prev => new Set(prev).add(nodeId));
+    } finally {
+      // 移除加载状态
+      setLoadingNodes(prev => {
+        const next = new Set(prev);
+        next.delete(nodeId);
+        return next;
+      });
+    }
   };
 
-  const updateNodeInHierarchy = (nodeId: string, updatedNode: HierarchyNode): HierarchyNode[] => {
-    console.log('[updateNodeInHierarchy] 查找并更新节点:', nodeId);
+  const updateNodeInHierarchy = (nodeId: string, updatedNode: HierarchyNode): void => {
     const update = (nodes: HierarchyNode[]): HierarchyNode[] => {
       return nodes.map(n => {
-        console.log('[updateNodeInHierarchy] 检查节点:', n.id, 'level:', n.level);
         if (n.id === nodeId) {
-          console.log('[updateNodeInHierarchy] 找到节点，更新children数量:', updatedNode.children?.length);
           return updatedNode;
         }
         if (n.children && n.children.length > 0) {
-          const updatedChildren = update(n.children);
-          return { ...n, children: updatedChildren };
+          return { ...n, children: update(n.children) };
         }
         return n;
       });
     };
 
-    const newHierarchy = update(hierarchy);
-    setHierarchy(newHierarchy);
-    console.log('[updateNodeInHierarchy] 层级结构已更新');
-    return newHierarchy;
+    setHierarchy(update(hierarchy));
   };
 
   const handleNodeClick = (node: HierarchyNode) => {
@@ -249,33 +242,22 @@ export function HierarchyNavigation({
       filters.subject = node.value;
     }
 
-    console.log('[handleNodeClick] 点击节点:', node.level, node.label, '筛选器:', filters);
     onFilterChange(filters);
   };
 
   // 从节点路径中推断上级节点信息
   const getParentNodeValue = (node: HierarchyNode, targetLevel: number): string | undefined => {
-    console.log('[getParentNodeValue] 查找节点:', node.id, '目标层级:', targetLevel);
-
     // 递归查找指定层级的父节点
     const findParentByLevel = (nodes: HierarchyNode[], targetId: string, targetLevel: number, path: HierarchyNode[] = []): HierarchyNode | null => {
-      console.log('[getParentNodeValue] 搜索路径长度:', path.length, '当前搜索目标:', targetId);
-
       for (const n of nodes) {
         const currentPath = [...path, n];
-        console.log('[getParentNodeValue] 检查节点:', n.id, '值:', n.value, '层级:', n.level);
 
         // 如果当前节点的子节点中包含目标节点
         if (n.children && n.children.length > 0) {
           for (const child of n.children) {
-            console.log('[getParentNodeValue] 检查子节点:', child.id);
-
             if (child.id === targetId) {
-              console.log('[getParentNodeValue] 找到父节点:', n.id, '值:', n.value, '层级:', n.level, '目标层级:', targetLevel);
-
               // 如果找到的是书院节点（level 2）
               if (n.level === targetLevel) {
-                console.log('[getParentNodeValue] 返回节点:', n.value);
                 return n;
               }
 
@@ -297,10 +279,7 @@ export function HierarchyNavigation({
 
     // 从根层级开始搜索
     const parentNode = findParentByLevel(hierarchy, node.id, targetLevel);
-    const value = parentNode?.value;
-
-    console.log('[getParentNodeValue] 最终结果:', value, 'for level', targetLevel);
-    return value;
+    return parentNode?.value;
   };
 
   // 从节点路径中推断书院名称
@@ -323,18 +302,69 @@ export function HierarchyNavigation({
     const isSelected = getNodeSelection(node);
     const hasChildren = node.children && node.children.length > 0;
     const canExpand = node.level <= 5; // 层级<=5的节点都可以展开
+    const isLoading = loadingNodes.has(node.id);
+
+    // 根据层级确定样式
+    const getNodeStyles = () => {
+      if (node.level === 1) {
+        // 顶级库类型节点 - 大标题样式
+        return {
+          container: 'mb-2',
+          button: cn(
+            'flex items-center gap-2 px-3 py-2.5 rounded-lg cursor-pointer transition-all group',
+            'bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200',
+            'hover:from-amber-100 hover:to-orange-100 hover:border-amber-300 hover:shadow-sm',
+            isSelected && 'from-amber-100 to-orange-100 border-amber-400 shadow-md'
+          ),
+          text: cn(
+            'font-semibold text-base',
+            isSelected ? 'text-amber-900' : 'text-amber-800'
+          ),
+          icon: 'text-amber-600 group-hover:text-amber-700',
+          badge: 'bg-amber-200 text-amber-900 font-medium'
+        };
+      } else if (node.level === 2) {
+        // 书院节点 - 次级标题样式
+        return {
+          container: 'mb-1',
+          button: cn(
+            'flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all',
+            'hover:bg-amber-50 hover:shadow-sm',
+            isSelected && 'bg-amber-100 shadow-sm ring-1 ring-amber-300'
+          ),
+          text: cn(
+            'font-medium text-sm',
+            isSelected ? 'text-amber-900' : 'text-gray-700'
+          ),
+          icon: 'text-amber-500',
+          badge: 'bg-amber-100 text-amber-800'
+        };
+      } else {
+        // 其他层级节点 - 普通样式
+        return {
+          container: '',
+          button: cn(
+            'flex items-center gap-2 px-3 py-1.5 rounded-md cursor-pointer transition-colors',
+            'hover:bg-gray-50',
+            isSelected && 'bg-amber-50 text-amber-900'
+          ),
+          text: cn(
+            'text-sm',
+            isSelected ? 'text-amber-900 font-medium' : 'text-gray-600'
+          ),
+          icon: isSelected ? 'text-amber-600' : 'text-gray-400',
+          badge: isSelected ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-500'
+        };
+      }
+    };
+
+    const styles = getNodeStyles();
 
     return (
-      <div key={node.id} className="select-none">
+      <div key={node.id} className={cn('select-none', styles.container)}>
         <div
-          className={cn(
-            'flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer text-sm transition-all',
-            'hover:bg-amber-50',
-            isSelected
-              ? 'bg-amber-100 text-amber-900 font-medium'
-              : 'text-gray-700'
-          )}
-          style={{ paddingLeft: `${depth * 12 + 12}px` }}
+          className={styles.button}
+          style={{ paddingLeft: `${depth * 16 + 12}px` }}
           onClick={() => {
             handleNodeClick(node);
           }}
@@ -345,39 +375,51 @@ export function HierarchyNavigation({
                 e.stopPropagation();
                 toggleNode(node.id, node);
               }}
-              className="p-0.5 hover:bg-amber-200 rounded"
+              disabled={isLoading}
+              className={cn(
+                'p-1 rounded-md transition-colors',
+                node.level === 1
+                  ? 'hover:bg-amber-200'
+                  : 'hover:bg-gray-200',
+                isLoading && 'opacity-50 cursor-wait'
+              )}
             >
-              {isExpanded ? (
-                <ChevronDown className="h-3 w-3" />
+              {isLoading ? (
+                <Loader2 className={cn('h-4 w-4 animate-spin', styles.icon)} />
+              ) : isExpanded ? (
+                <ChevronDown className={cn('h-4 w-4', styles.icon)} />
               ) : (
-                <ChevronRight className="h-3 w-3" />
+                <ChevronRight className={cn('h-4 w-4', styles.icon)} />
               )}
             </button>
           )}
 
           {!canExpand && node.level > 0 && (
-            <div className="w-4 h-4 flex items-center justify-center">
+            <div className="w-5 h-5 flex items-center justify-center">
               {node.level <= 2 ? (
-                <Library className="h-3 w-3 text-amber-600" />
+                <Library className={cn('h-4 w-4', styles.icon)} />
               ) : node.level <= 4 ? (
-                <BookOpen className="h-3 w-3 text-amber-500" />
+                <BookOpen className={cn('h-4 w-4', styles.icon)} />
               ) : (
-                <Hash className="h-3 w-3 text-amber-400" />
+                <Hash className={cn('h-4 w-4', styles.icon)} />
               )}
             </div>
           )}
 
-          <span className="flex-1 truncate">{node.label}</span>
+          <span className={cn('flex-1 truncate', styles.text)}>{node.label}</span>
 
           {node.count !== undefined && (
-            <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
+            <span className={cn(
+              'text-xs px-2 py-0.5 rounded-full font-medium transition-colors',
+              styles.badge
+            )}>
               {node.count}
             </span>
           )}
         </div>
 
         {hasChildren && isExpanded && (
-          <div>
+          <div className={node.level === 1 ? 'mt-1 space-y-0.5' : 'space-y-0.5'}>
             {node.children!.map((child) => renderNode(child, depth + 1))}
           </div>
         )}
@@ -397,11 +439,11 @@ export function HierarchyNavigation({
 
   if (loading) {
     return (
-      <div className="space-y-2">
+      <div className="space-y-3 p-3">
         {[1, 2, 3, 4].map((i) => (
           <div
             key={i}
-            className="h-8 bg-gray-100 animate-pulse rounded-md"
+            className="h-10 bg-gradient-to-r from-gray-100 to-gray-50 animate-pulse rounded-lg"
           />
         ))}
       </div>
@@ -409,8 +451,8 @@ export function HierarchyNavigation({
   }
 
   return (
-    <div className="h-full overflow-y-auto pb-4 pr-2" style={{ scrollBehavior: 'smooth' }}>
-      <div className="space-y-1">
+    <div className="h-full overflow-y-auto pb-4 pr-2 hierarchy-scrollbar" style={{ scrollBehavior: 'smooth' }}>
+      <div className="space-y-2 p-3">
         {hierarchy.map((node) => renderNode(node))}
       </div>
     </div>

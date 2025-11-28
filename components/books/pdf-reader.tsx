@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
+import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Maximize, Palette, Type } from 'lucide-react';
@@ -15,8 +15,16 @@ import { useAuth } from '@/contexts/AuthContext';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
-// 配置 PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+// 动态导入 react-pdf 以避免 SSR 问题
+const Document = dynamic(
+  () => import('react-pdf').then((mod) => mod.Document),
+  { ssr: false }
+);
+
+const Page = dynamic(
+  () => import('react-pdf').then((mod) => mod.Page),
+  { ssr: false }
+);
 
 interface PdfReaderProps {
   fileUrl: string;
@@ -43,6 +51,15 @@ export function PdfReader({ fileUrl, bookId }: PdfReaderProps) {
 
   // 生成唯一的存储key
   const storageKey = `pdf-progress-${fileUrl}`;
+
+  // 配置 PDF.js worker (仅在客户端)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      import('react-pdf').then((pdfjs) => {
+        pdfjs.pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.pdfjs.version}/build/pdf.worker.min.mjs`;
+      });
+    }
+  }, []);
 
   // 加载保存的阅读进度(从服务器或localStorage)
   useEffect(() => {
