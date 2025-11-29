@@ -22,7 +22,7 @@ export async function getAllBooks(): Promise<Book[]> {
   }
 }
 
-// 筛选书籍
+// 筛选书籍 - 优化版本,不再获取全部数据
 export async function filterBooks(params: {
   search?: string;
   category?: string;
@@ -32,70 +32,55 @@ export async function filterBooks(params: {
   year?: string;
   season?: string;
   subject?: string;
+  limit?: number;
+  offset?: number;
 }): Promise<Book[]> {
   try {
-    // 分批获取所有数据,绕过Supabase的1000条限制
-    const pageSize = 1000;
-    let allBooks: Book[] = [];
-    let page = 0;
-    let hasMore = true;
+    const limit = params.limit || 5000; // 默认最多返回5000条
+    const offset = params.offset || 0;
 
-    while (hasMore) {
-      let query = supabase
-        .from('books')
-        .select('*', { count: 'exact' })
-        .order('created_at', { ascending: false })
-        .range(page * pageSize, (page + 1) * pageSize - 1);
+    let query = supabase
+      .from('books')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1);
 
-      // 应用筛选条件
-      if (params.search) {
-        query = query.or(`title.ilike.%${params.search}%,author.ilike.%${params.search}%,keywords.ilike.%${params.search}%,full_text.ilike.%${params.search}%`);
-      }
-      if (params.category) {
-        query = query.eq('category', params.category);
-      }
-      if (params.dynasty) {
-        query = query.eq('dynasty', params.dynasty);
-      }
-      if (params.libraryType) {
-        query = query.eq('library_type', params.libraryType);
-      }
-      if (params.academy) {
-        query = query.eq('academy', params.academy);
-      }
-      if (params.year) {
-        query = query.eq('year', params.year);
-      }
-      if (params.season) {
-        query = query.eq('season', params.season);
-      }
-      if (params.subject) {
-        query = query.eq('subject', params.subject);
-      }
-
-      const { data, error, count } = await query;
-
-      if (error) {
-        console.error('筛选书籍失败:', error);
-        throw error;
-      }
-
-      if (data && data.length > 0) {
-        allBooks = allBooks.concat(data);
-        hasMore = data.length === pageSize;
-        page++;
-      } else {
-        hasMore = false;
-      }
-
-      // 首次查询时输出总数
-      if (page === 1) {
-        console.log(`[filterBooks] 数据库总计数: ${count}, 开始分页获取...`);
-      }
+    // 应用筛选条件
+    if (params.search) {
+      // 优化: 只搜索标题、作者和关键词,移除full_text搜索以提高性能
+      query = query.or(`title.ilike.%${params.search}%,author.ilike.%${params.search}%,keywords.ilike.%${params.search}%`);
+    }
+    if (params.category) {
+      query = query.eq('category', params.category);
+    }
+    if (params.dynasty) {
+      query = query.eq('dynasty', params.dynasty);
+    }
+    if (params.libraryType) {
+      query = query.eq('library_type', params.libraryType);
+    }
+    if (params.academy) {
+      query = query.eq('academy', params.academy);
+    }
+    if (params.year) {
+      query = query.eq('year', params.year);
+    }
+    if (params.season) {
+      query = query.eq('season', params.season);
+    }
+    if (params.subject) {
+      query = query.eq('subject', params.subject);
     }
 
-    console.log(`[filterBooks] 实际返回书籍数量: ${allBooks.length}`);
-    return allBooks;
+    const { data, error } = await query;
+
+    if (error) {
+      console.error('筛选书籍失败:', error);
+      throw error;
+    }
+
+    console.log(`[filterBooks] 返回书籍数量: ${data?.length || 0}`);
+    return data || [];
   } catch (error) {
     console.error('filterBooks 发生错误:', error);
     return [];
