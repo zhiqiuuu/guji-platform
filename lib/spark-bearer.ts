@@ -91,11 +91,11 @@ export async function chatBearer(
     max_tokens?: number;
   } = {}
 ): Promise<string> {
-  const apiKey = process.env.SPARK_API_KEY || '';
+  const apiPassword = process.env.SPARK_API_PASSWORD || '';
 
-  if (!apiKey) {
-    console.error('星火 API Key 配置缺失');
-    throw new Error('星火 API Key 配置缺失,请检查环境变量');
+  if (!apiPassword) {
+    console.error('星火 APIPassword 配置缺失');
+    throw new Error('星火 APIPassword 配置缺失,请检查环境变量');
   }
 
   const messages: SparkMessage[] = [
@@ -103,7 +103,7 @@ export async function chatBearer(
     { role: 'user', content: message },
   ];
 
-  return sendToSparkBearer(apiKey, {
+  return sendToSparkBearer(apiPassword, {
     messages,
     temperature: options.temperature,
     max_tokens: options.max_tokens,
