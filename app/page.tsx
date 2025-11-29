@@ -68,14 +68,14 @@ export default function Home() {
             {/* Search Bar */}
             <form onSubmit={handleSearch} className="max-w-2xl mx-auto pt-2 sm:pt-4">
               <div className="flex flex-col sm:flex-row gap-2">
-                <div className="relative flex-1">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <div className="relative flex-1 flex items-center">
+                  <Search className="absolute left-4 h-5 w-5 text-gray-400 pointer-events-none z-10" />
                   <Input
                     type="text"
                     placeholder="搜索书名、作者、朝代..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-12 h-12 sm:h-14 text-base sm:text-lg border-2 border-gray-300 focus:border-amber-500"
+                    className="pl-12 h-12 sm:h-14 text-base sm:text-lg border-2 border-gray-300 focus:border-amber-500 w-full"
                   />
                 </div>
                 <Button type="submit" size="lg" className="h-12 sm:h-14 px-6 sm:px-8 bg-amber-600 hover:bg-amber-700 w-full sm:w-auto">
