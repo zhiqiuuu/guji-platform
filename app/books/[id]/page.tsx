@@ -43,10 +43,28 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
   const [prevBook, setPrevBook] = useState<AdjacentBook | null>(null);
   const [nextBook, setNextBook] = useState<AdjacentBook | null>(null);
 
-  // 三栏布局状态
-  const [showLeftPanel, setShowLeftPanel] = useState(true);
-  const [showRightPanel, setShowRightPanel] = useState(true);
+  // 三栏布局状态 - 移动端默认关闭面板
+  const [showLeftPanel, setShowLeftPanel] = useState(false);
+  const [showRightPanel, setShowRightPanel] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // 检测屏幕宽度,桌面端自动打开面板
+  useEffect(() => {
+    const handleResize = () => {
+      const isDesktop = window.innerWidth >= 768; // md breakpoint
+      if (isDesktop) {
+        setShowLeftPanel(true);
+        setShowRightPanel(true);
+      }
+    };
+
+    // 初始化时检测一次
+    handleResize();
+
+    // 监听窗口大小变化
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // PDF阅读状态
   const [currentPage, setCurrentPage] = useState(1);

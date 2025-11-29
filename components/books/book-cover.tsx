@@ -89,8 +89,8 @@ export function BookCover({ book, width = 300, height = 400, className = '' }: B
       </div>
 
       {/* 右下角印章 - 更加柔和,调整位置 */}
-      <div className="absolute bottom-2 right-2 w-8 h-8 bg-red-600/50 border border-red-800/60 flex items-center justify-center transform rotate-45">
-        <div className="transform -rotate-45 text-white text-[7px] font-medium writing-mode-vertical leading-tight opacity-90">
+      <div className="absolute bottom-2 right-2 w-5 h-5 bg-red-600/50 border border-red-800/60 flex items-center justify-center transform rotate-45">
+        <div className="transform -rotate-45 text-white text-[5px] font-medium writing-mode-vertical leading-tight opacity-90">
           藏
         </div>
       </div>
