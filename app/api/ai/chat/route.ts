@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { chatHTTP } from '@/lib/spark-http';
+import { KimiService, AI_PROMPTS } from '@/lib/kimi';
 
 export const runtime = 'edge';
 
@@ -18,13 +18,13 @@ interface ChatRequest {
 
 /**
  * AI 聊天 API
- * 使用讯飞星火 Lite 模型
+ * 使用 Kimi AI (Moonshot)
  */
 export async function POST(request: NextRequest) {
   try {
     const body: ChatRequest = await request.json();
 
-    const { message, history = [], stream: isStream = false, temperature, max_tokens } = body;
+    const { message, history = [], stream: isStream = false, temperature } = body;
 
     if (!message || typeof message !== 'string' || message.trim() === '') {
       return NextResponse.json(
@@ -33,21 +33,33 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 使用 HTTP API 实现,兼容 Vercel Edge Runtime
-    const response = await chatHTTP(message, history, {
-      temperature,
-      max_tokens,
+    // 使用 Kimi API
+    const kimiService = new KimiService();
+
+    // 构建消息列表,包含系统提示和历史对话
+    const messages = [
+      { role: 'system' as const, content: AI_PROMPTS.CHAT() },
+      ...history.map(msg => ({
+        role: msg.role as 'user' | 'assistant',
+        content: msg.content
+      })),
+      { role: 'user' as const, content: message }
+    ];
+
+    const response = await kimiService.chat({
+      messages,
+      temperature: temperature || 0.7,
     });
 
     return NextResponse.json({
       success: true,
       message: response,
-      model: 'spark-lite',
+      model: 'moonshot-v1-8k',
     });
   } catch (error: any) {
     console.error('AI 聊天错误:', error);
     return NextResponse.json(
-      { error: '服务器错误', details: error.message },
+      { error: 'AI服务暂时不可用', details: error.message },
       { status: 500 }
     );
   }
