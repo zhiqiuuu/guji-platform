@@ -354,3 +354,562 @@
  GET /api/books 200 in 2.3s (compile: 16ms, render: 2.3s)
    Reload env: .env.local
    Reload env: .env.local
+ ⨯ ./guji-platform/app/api/ai/chat/route.ts:52:11
+Ecmascript file had an error
+[0m [90m 50 |[39m     [90m// 流式响应[39m
+ [90m 51 |[39m     [36mconst[39m encoder [33m=[39m [36mnew[39m [33mTextEncoder[39m()[33m;[39m
+[31m[1m>[22m[39m[90m 52 |[39m     [36mconst[39m stream [33m=[39m [36mnew[39m [33mReadableStream[39m({
+ [90m    |[39m           [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 53 |[39m       [36masync[39m start(controller) {
+ [90m 54 |[39m         [36mtry[39m {
+ [90m 55 |[39m           [36mfor[39m [36mawait[39m ([36mconst[39m chunk [36mof[39m chatStream(message[33m,[39m history[33m,[39m {[0m
+
+the name `stream` is defined multiple times
+
+
+ POST /api/ai/chat 500 in 3.1s (compile: 3.0s, render: 134ms)
+ POST /api/ai/chat 200 in 3.1s (compile: 54ms, render: 3.1s)
+ POST /api/ai/chat 200 in 1034ms (compile: 4ms, render: 1030ms)
+ POST /api/ai/chat 200 in 1346ms (compile: 8ms, render: 1338ms)
+ ○ Compiling / ...
+ GET / 200 in 8.0s (compile: 7.7s, render: 306ms)
+[filterBooks] 数据库总计数: 2716, 开始分页获取...
+[filterBooks] 实际返回书籍数量: 2716
+ GET /api/books 200 in 3.9s (compile: 59ms, render: 3.8s)
+ POST /api/ai/chat 400 in 12ms (compile: 6ms, render: 6ms)
+ POST /api/ai/chat 400 in 9ms (compile: 6ms, render: 4ms)
+ POST /api/ai/chat 400 in 9ms (compile: 4ms, render: 5ms)
+ GET /books/7fccbb01-1b80-41a8-8b9b-c26386f14b76 200 in 2.4s (compile: 2.3s, render: 54ms)
+ GET /api/books/7fccbb01-1b80-41a8-8b9b-c26386f14b76 200 in 2.3s (compile: 1084ms, render: 1210ms)
+ GET /api/books/7fccbb01-1b80-41a8-8b9b-c26386f14b76/adjacent 200 in 3.2s (compile: 1110ms, render: 2.1s)
+D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__a1eec38f._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_dd7539c1._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+Kimi API Error: Error: Invalid Authentication
+    at KimiService.chat (D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__a1eec38f._.js:78:23)
+    at async POST (D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__a1eec38f._.js:146:26)
+    at async responseGenerator (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_dd7539c1._.js:14333:38)
+    at async handleResponse (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_dd7539c1._.js:14395:32)
+    at async handler (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_dd7539c1._.js:14448:13)
+D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__a1eec38f._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_dd7539c1._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+AI Interpret Error: Error: Invalid Authentication
+    at KimiService.chat (D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__a1eec38f._.js:78:23)
+    at async POST (D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__a1eec38f._.js:146:26)
+    at async responseGenerator (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_dd7539c1._.js:14333:38)
+    at async handleResponse (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_dd7539c1._.js:14395:32)
+    at async handler (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_dd7539c1._.js:14448:13)
+ POST /api/ai/interpret 500 in 382ms (compile: 154ms, render: 228ms)
+ ✓ Compiled in 137ms
+ GET /books/7fccbb01-1b80-41a8-8b9b-c26386f14b76 200 in 404ms (compile: 126ms, render: 278ms)
+ GET /api/books/7fccbb01-1b80-41a8-8b9b-c26386f14b76 200 in 1254ms (compile: 12ms, render: 1242ms)
+ GET /api/books/7fccbb01-1b80-41a8-8b9b-c26386f14b76/adjacent 200 in 2.1s (compile: 29ms, render: 2.0s)
+D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__a1eec38f._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__1fe418b5._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_c3870dc3._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+Kimi API Error: Error: Invalid Authentication
+    at KimiService.chat (D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__a1eec38f._.js:78:23)
+    at async POST (D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__1fe418b5._.js:146:26)
+    at async responseGenerator (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_c3870dc3._.js:14333:38)
+    at async handleResponse (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_c3870dc3._.js:14395:32)
+    at async handler (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_c3870dc3._.js:14448:13)
+D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__a1eec38f._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__1fe418b5._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_c3870dc3._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+AI Translate Error: Error: Invalid Authentication
+    at KimiService.chat (D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__a1eec38f._.js:78:23)
+    at async POST (D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__1fe418b5._.js:146:26)
+    at async responseGenerator (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_c3870dc3._.js:14333:38)
+    at async handleResponse (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_c3870dc3._.js:14395:32)
+    at async handler (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_c3870dc3._.js:14448:13)
+ POST /api/ai/translate 500 in 373ms (compile: 159ms, render: 214ms)
+D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__a1eec38f._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_dd7539c1._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+Kimi API Error: Error: Invalid Authentication
+    at KimiService.chat (D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__a1eec38f._.js:78:23)
+    at async POST (D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__a1eec38f._.js:146:26)
+    at async responseGenerator (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_dd7539c1._.js:14333:38)
+    at async handleResponse (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_dd7539c1._.js:14395:32)
+    at async handler (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_dd7539c1._.js:14448:13)
+D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__a1eec38f._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_dd7539c1._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+AI Interpret Error: Error: Invalid Authentication
+    at KimiService.chat (D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__a1eec38f._.js:78:23)
+    at async POST (D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__a1eec38f._.js:146:26)
+    at async responseGenerator (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_dd7539c1._.js:14333:38)
+    at async handleResponse (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_dd7539c1._.js:14395:32)
+    at async handler (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_dd7539c1._.js:14448:13)
+ POST /api/ai/interpret 500 in 182ms (compile: 1978µs, render: 180ms)
+ GET / 200 in 164ms (compile: 97ms, render: 67ms)
+[filterBooks] 数据库总计数: 2716, 开始分页获取...
+[filterBooks] 实际返回书籍数量: 2716
+ GET /api/books 200 in 2.8s (compile: 2ms, render: 2.8s)
+[filterBooks] 数据库总计数: 2716, 开始分页获取...
+[filterBooks] 实际返回书籍数量: 2716
+ GET /api/books 200 in 1786ms (compile: 2ms, render: 1784ms)
+ POST /api/ai/chat 200 in 744ms (compile: 3ms, render: 741ms)
+ POST /api/ai/chat 200 in 1919ms (compile: 4ms, render: 1915ms)
+ POST /api/ai/chat 200 in 1419ms (compile: 4ms, render: 1415ms)
+ ✓ Compiled in 77ms
+ POST /api/ai/chat 200 in 5.7s (compile: 6ms, render: 5.7s)
+ POST /api/ai/chat 200 in 1490ms (compile: 5ms, render: 1485ms)
+ GET /books/23afd22b-dec3-46a3-823f-860c1723dcd4 200 in 192ms (compile: 110ms, render: 81ms)
+ GET /api/books/23afd22b-dec3-46a3-823f-860c1723dcd4 200 in 1292ms (compile: 11ms, render: 1281ms)
+ GET /api/books/23afd22b-dec3-46a3-823f-860c1723dcd4/adjacent 200 in 1746ms (compile: 30ms, render: 1716ms)
+D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__1fe418b5._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_c3870dc3._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+Kimi API Error: Error: Invalid Authentication
+    at KimiService.chat (D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__1fe418b5._.js:78:23)
+    at async POST (D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__1fe418b5._.js:167:26)
+    at async responseGenerator (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_c3870dc3._.js:14333:38)
+    at async handleResponse (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_c3870dc3._.js:14395:32)
+    at async handler (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_c3870dc3._.js:14448:13)
+D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__1fe418b5._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_c3870dc3._.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+AI Translate Error: Error: Invalid Authentication
+    at KimiService.chat (D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__1fe418b5._.js:78:23)
+    at async POST (D:\work\keyi\guji-platform\.next\dev\server\chunks\[root-of-the-server]__1fe418b5._.js:167:26)
+    at async responseGenerator (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_c3870dc3._.js:14333:38)
+    at async handleResponse (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_c3870dc3._.js:14395:32)
+    at async handler (D:\work\keyi\guji-platform\.next\dev\server\chunks\72ff4_next_c3870dc3._.js:14448:13)
+ POST /api/ai/translate 500 in 227ms (compile: 45ms, render: 181ms)
+ POST /api/ai/translate 200 in 755ms (compile: 144ms, render: 611ms)
+[filterBooks] 数据库总计数: 2716, 开始分页获取...
+[filterBooks] 实际返回书籍数量: 2716
+ GET /api/books 200 in 2.5s (compile: 3ms, render: 2.5s)
+[filterBooks] 数据库总计数: 2716, 开始分页获取...
+[filterBooks] 实际返回书籍数量: 2716
+ GET /api/books 200 in 1685ms (compile: 3ms, render: 1682ms)
+ GET /books/7fccbb01-1b80-41a8-8b9b-c26386f14b76 200 in 29ms (compile: 8ms, render: 21ms)
+ GET /api/books/7fccbb01-1b80-41a8-8b9b-c26386f14b76 200 in 835ms (compile: 22ms, render: 813ms)
+ GET /api/books/7fccbb01-1b80-41a8-8b9b-c26386f14b76/adjacent 200 in 1641ms (compile: 11ms, render: 1630ms)
+ POST /api/ai/interpret 200 in 5.5s (compile: 139ms, render: 5.4s)
+ ✓ Compiled in 77ms
+ ✓ Compiled in 77ms
+ ✓ Compiled in 65ms
+ ✓ Compiled in 72ms
+ POST /api/ai/interpret 200 in 7.2s (compile: 5ms, render: 7.2s)
+ ✓ Compiled in 211ms
+ GET /books/7fccbb01-1b80-41a8-8b9b-c26386f14b76 200 in 417ms (compile: 109ms, render: 309ms)
+ GET /api/books/7fccbb01-1b80-41a8-8b9b-c26386f14b76 200 in 1795ms (compile: 12ms, render: 1783ms)
+ GET /api/books/7fccbb01-1b80-41a8-8b9b-c26386f14b76/adjacent 200 in 2.7s (compile: 32ms, render: 2.7s)
+ POST /api/ai/interpret 200 in 6.2s (compile: 4ms, render: 6.2s)
+ GET /books/7fccbb01-1b80-41a8-8b9b-c26386f14b76 200 in 80ms (compile: 12ms, render: 68ms)
+ GET /api/books/7fccbb01-1b80-41a8-8b9b-c26386f14b76 200 in 808ms (compile: 11ms, render: 797ms)
+ GET /api/books/7fccbb01-1b80-41a8-8b9b-c26386f14b76/adjacent 200 in 1733ms (compile: 31ms, render: 1702ms)
+ POST /api/ai/interpret 200 in 7.5s (compile: 4ms, render: 7.5s)
+ GET /books 200 in 842ms (compile: 718ms, render: 124ms)
+[filterBooks] 数据库总计数: 2716, 开始分页获取...
+[Hierarchy API] 查询到 2716 条数据
+ GET /api/books/hierarchy 200 in 2.3s (compile: 223ms, render: 2.1s)
+[filterBooks] 实际返回书籍数量: 2716
+ GET /api/books? 200 in 2.5s (compile: 4ms, render: 2.5s)
+ GET /books/7fccbb01-1b80-41a8-8b9b-c26386f14b76 200 in 33ms (compile: 9ms, render: 24ms)
+ GET /api/books/7fccbb01-1b80-41a8-8b9b-c26386f14b76 200 in 424ms (compile: 12ms, render: 412ms)
+ GET /api/books/7fccbb01-1b80-41a8-8b9b-c26386f14b76/adjacent 200 in 1237ms (compile: 24ms, render: 1213ms)
+ POST /api/ai/interpret 200 in 5.2s (compile: 3ms, render: 5.2s)
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\route-matcher-managers\dev-route-matcher-manager.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\route-matcher-managers\default-route-matcher-manager.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\app\page\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\app\\page\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\pages\_app\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\pages\\_app\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\route-matcher-managers\dev-route-matcher-manager.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\route-matcher-managers\default-route-matcher-manager.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\app\page\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\app\\page\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\pages\_app\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\pages\\_app\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\pages\_app\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\pages\\_app\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\route-matcher-managers\dev-route-matcher-manager.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\route-matcher-managers\default-route-matcher-manager.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\app\page\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\app\\page\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\pages\_app\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\pages\\_app\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\route-matcher-managers\dev-route-matcher-manager.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\route-matcher-managers\default-route-matcher-manager.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\app\page\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\app\\page\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\pages\_app\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\pages\\_app\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\pages\_app\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\pages\\_app\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\route-matcher-managers\dev-route-matcher-manager.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\route-matcher-managers\default-route-matcher-manager.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\app\page\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\app\\page\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\pages\_app\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\pages\\_app\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\route-matcher-managers\dev-route-matcher-manager.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\route-matcher-managers\default-route-matcher-manager.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\app\page\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\app\\page\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\pages\_app\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\pages\\_app\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\pages\_app\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\pages\\_app\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\route-matcher-managers\dev-route-matcher-manager.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\route-matcher-managers\default-route-matcher-manager.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\app\page\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\app\\page\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\pages\_app\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\pages\\_app\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\route-matcher-managers\dev-route-matcher-manager.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\route-matcher-managers\default-route-matcher-manager.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\next-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\app\page\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\app\\page\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+ ⨯ Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\pages\_app\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\pages\\_app\\build-manifest.json'
+}
+D:\work\keyi\guji-platform\node_modules\next\dist\shared\lib\turbopack\manifest-loader.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\turbopack-utils.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\hot-reloader-turbopack.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\trace\trace.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\dev-bundler-service.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\dev\next-dev-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\base-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\router-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+D:\work\keyi\guji-platform\node_modules\next\dist\server\lib\start-server.js: Invalid source map. Only conformant source maps can be used to find the original code. Cause: Error: sourceMapURL could not be parsed
+Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next\dev\server\pages\_app\build-manifest.json'
+    at ignore-listed frames {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'D:\\work\\keyi\\guji-platform\\.next\\dev\\server\\pages\\_app\\build-manifest.json'
+}
+ ✓ Compiled in 74ms
+ ✓ Compiled in 64ms

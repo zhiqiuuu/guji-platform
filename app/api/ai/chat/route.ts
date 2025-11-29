@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { chat, chatStream } from '@/lib/spark';
+import { chatEdge } from '@/lib/spark-edge';
 
-export const runtime = 'nodejs';
+export const runtime = 'edge';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -33,49 +33,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 非流式响应
-    if (!isStream) {
-      const response = await chat(message, history, {
-        temperature,
-        max_tokens,
-      });
-
-      return NextResponse.json({
-        success: true,
-        message: response,
-        model: 'spark-lite',
-      });
-    }
-
-    // 流式响应
-    const encoder = new TextEncoder();
-    const readableStream = new ReadableStream({
-      async start(controller) {
-        try {
-          for await (const chunk of chatStream(message, history, {
-            temperature,
-            max_tokens,
-          })) {
-            const data = JSON.stringify({ chunk }) + '\n';
-            controller.enqueue(encoder.encode(data));
-          }
-          controller.close();
-        } catch (error: any) {
-          const errorData = JSON.stringify({
-            error: error.message || '流式响应错误',
-          }) + '\n';
-          controller.enqueue(encoder.encode(errorData));
-          controller.close();
-        }
-      },
+    // 使用 Edge Runtime 兼容的实现
+    const response = await chatEdge(message, history, {
+      temperature,
+      max_tokens,
     });
 
-    return new Response(readableStream, {
-      headers: {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
-      },
+    return NextResponse.json({
+      success: true,
+      message: response,
+      model: 'spark-lite',
     });
   } catch (error: any) {
     console.error('AI 聊天错误:', error);

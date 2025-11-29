@@ -75,44 +75,46 @@ function SearchPageContent() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* 页面标题 */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">高级搜索</h1>
-          <p className="text-gray-600">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">高级搜索</h1>
+          <p className="text-sm sm:text-base text-gray-600">
             在古籍数据库中精确搜索段落和书籍
           </p>
         </div>
 
         {/* 搜索栏 */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
-          <form onSubmit={handleSearch} className="space-y-4">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-6 sm:mb-8">
+          <form onSubmit={handleSearch} className="space-y-3 sm:space-y-4">
             {/* 搜索模式选择 */}
-            <div className="flex gap-4">
+            <div className="flex gap-2 sm:gap-4">
               <button
                 type="button"
                 onClick={() => setSearchMode('paragraph')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base ${
                   searchMode === 'paragraph'
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
                 <FileText className="w-4 h-4" />
-                段落搜索
+                <span className="hidden sm:inline">段落搜索</span>
+                <span className="sm:hidden">段落</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setSearchMode('book')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base ${
                   searchMode === 'book'
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
                 <Book className="w-4 h-4" />
-                书籍搜索
+                <span className="hidden sm:inline">书籍搜索</span>
+                <span className="sm:hidden">书籍</span>
               </button>
             </div>
 
@@ -136,14 +138,14 @@ function SearchPageContent() {
             <button
               type="submit"
               disabled={isLoading || !searchQuery.trim()}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium"
+              className="w-full bg-blue-600 text-white py-2.5 sm:py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium text-sm sm:text-base"
             >
               {isLoading ? '搜索中...' : '搜索'}
             </button>
           </form>
 
           {/* 搜索提示 */}
-          <div className="mt-4 text-sm text-gray-500">
+          <div className="mt-3 sm:mt-4 text-xs sm:text-sm text-gray-500">
             {searchMode === 'paragraph' ? (
               <p>
                 💡 段落搜索会在所有书籍的段落内容中查找匹配的关键词,并显示上下文
@@ -158,8 +160,8 @@ function SearchPageContent() {
 
         {/* 错误提示 */}
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-8">
-            <p className="text-red-800">❌ {error}</p>
+          <div className="bg-red-50 border border-red-200 rounded-lg p-3 sm:p-4 mb-6 sm:mb-8">
+            <p className="text-sm sm:text-base text-red-800">❌ {error}</p>
           </div>
         )}
 

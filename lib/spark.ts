@@ -80,10 +80,25 @@ function buildRequestBody(params: SparkRequestParams) {
 export async function sendToSpark(params: SparkRequestParams): Promise<string> {
   return new Promise((resolve, reject) => {
     try {
-      const ws = new WebSocket(generateAuthUrl());
+      // 检查必要的环境变量
+      if (!SPARK_APP_ID || !SPARK_API_SECRET || !SPARK_API_KEY) {
+        console.error('星火 API 配置缺失:', {
+          hasAppId: !!SPARK_APP_ID,
+          hasApiSecret: !!SPARK_API_SECRET,
+          hasApiKey: !!SPARK_API_KEY,
+        });
+        reject(new Error('星火 API 配置缺失,请检查环境变量'));
+        return;
+      }
+
+      const authUrl = generateAuthUrl();
+      console.log('正在连接星火 API...');
+
+      const ws = new WebSocket(authUrl);
       let fullResponse = '';
 
       ws.onopen = () => {
+        console.log('WebSocket 连接已建立');
         const requestBody = buildRequestBody(params);
         ws.send(JSON.stringify(requestBody));
       };
@@ -94,8 +109,9 @@ export async function sendToSpark(params: SparkRequestParams): Promise<string> {
 
           // 检查错误
           if (data.header?.code !== 0) {
+            console.error('星火 API 错误:', data.header);
             ws.close();
-            reject(new Error(data.header?.message || '星火 API 返回错误'));
+            reject(new Error(`星火 API 错误 (${data.header?.code}): ${data.header?.message || '未知错误'}`));
             return;
           }
 
@@ -107,33 +123,40 @@ export async function sendToSpark(params: SparkRequestParams): Promise<string> {
 
           // 检查是否结束
           if (data.header?.status === 2) {
+            console.log('星火 API 响应完成');
             ws.close();
             resolve(fullResponse);
           }
         } catch (error) {
+          console.error('解析消息错误:', error);
           ws.close();
           reject(error);
         }
       };
 
       ws.onerror = (error) => {
-        reject(new Error('WebSocket 连接错误'));
+        console.error('WebSocket 连接错误:', error);
+        reject(new Error('WebSocket 连接失败,可能是网络问题或认证失败'));
       };
 
-      ws.onclose = () => {
+      ws.onclose = (event) => {
+        console.log('WebSocket 连接已关闭:', event.code, event.reason);
         if (!fullResponse) {
           reject(new Error('连接关闭但未收到响应'));
         }
       };
 
-      // 超时处理
+      // 超时处理 - Vercel 免费版限制 10 秒
+      const timeout = process.env.VERCEL ? 9000 : 30000;
       setTimeout(() => {
         if (ws.readyState !== WebSocket.CLOSED) {
+          console.warn('请求超时,关闭连接');
           ws.close();
-          reject(new Error('请求超时'));
+          reject(new Error('请求超时,请稍后重试'));
         }
-      }, 30000); // 30秒超时
+      }, timeout);
     } catch (error) {
+      console.error('sendToSpark 异常:', error);
       reject(error);
     }
   });

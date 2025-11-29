@@ -89,17 +89,17 @@ export default function BooksPage() {
     <div className="min-h-screen bg-stone-50">
       {/* 页面标题 */}
       <div className="border-b border-stone-200 bg-white">
-        <div className="container px-6 py-5 mx-auto max-w-[1600px]">
-          <h1 className="text-xl font-serif text-stone-900 tracking-wide mb-1">典藏书库</h1>
+        <div className="container px-4 sm:px-6 py-4 sm:py-5 mx-auto max-w-[1600px]">
+          <h1 className="text-lg sm:text-xl font-serif text-stone-900 tracking-wide mb-1">典藏书库</h1>
           <p className="text-xs text-stone-600 tracking-wide">浏览课题库与课艺库</p>
         </div>
       </div>
 
-      <div className="container px-6 py-5 mx-auto max-w-[1600px]">
+      <div className="container px-4 sm:px-6 py-4 sm:py-5 mx-auto max-w-[1600px]">
         <div className="flex flex-col lg:flex-row gap-4">
           {/* 层级导航侧边栏 */}
-          <aside className="lg:w-64 flex-shrink-0">
-            <div className="bg-white rounded shadow-sm border border-stone-200 overflow-hidden h-[calc(100vh-160px)] flex flex-col sticky top-4">
+          <aside className="w-full lg:w-64 flex-shrink-0">
+            <div className="bg-white rounded shadow-sm border border-stone-200 overflow-hidden max-h-96 lg:h-[calc(100vh-160px)] flex flex-col lg:sticky lg:top-4">
               <div className="bg-stone-100 px-4 py-2.5 border-b border-stone-200">
                 <h3 className="font-serif text-stone-800 text-sm tracking-wide">层级导航</h3>
               </div>
@@ -129,7 +129,7 @@ export default function BooksPage() {
             </div>
 
             {/* 筛选标签和排序 */}
-            <div className="mb-3 flex flex-wrap items-center gap-3">
+            <div className="mb-3 flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-2 sm:gap-3">
               {/* 筛选标签 */}
               {Object.keys(filters).length > 0 && (
                 <div className="flex flex-wrap gap-1.5">
@@ -167,8 +167,8 @@ export default function BooksPage() {
               )}
 
               {/* 排序选择器 */}
-              <div className="ml-auto flex items-center gap-2">
-                <label className="text-xs text-stone-600" style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}>
+              <div className="w-full sm:w-auto sm:ml-auto flex items-center gap-2">
+                <label className="text-xs text-stone-600 whitespace-nowrap" style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}>
                   排序:
                 </label>
                 <select
@@ -177,7 +177,7 @@ export default function BooksPage() {
                     setSortBy(e.target.value as SortOption);
                     setCurrentPage(1);
                   }}
-                  className="px-3 py-1.5 text-xs border border-stone-300 rounded bg-white text-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                  className="flex-1 sm:flex-none px-3 py-1.5 text-xs border border-stone-300 rounded bg-white text-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
                   style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}
                 >
                   <option value="default">默认排序</option>
@@ -215,29 +215,32 @@ export default function BooksPage() {
 
                 {/* 分页控件 */}
                 {totalPages > 1 && (
-                  <div className="mt-6 flex items-center justify-center gap-2">
+                  <div className="mt-6 flex items-center justify-center gap-1 sm:gap-2">
                     <button
                       onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                       disabled={currentPage === 1}
-                      className="px-4 py-2 border border-stone-300 rounded text-sm text-stone-700 hover:bg-stone-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="px-3 sm:px-4 py-2 border border-stone-300 rounded text-xs sm:text-sm text-stone-700 hover:bg-stone-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                       style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}
                     >
-                      上一页
+                      <span className="hidden sm:inline">上一页</span>
+                      <span className="sm:hidden">上页</span>
                     </button>
 
                     <div className="flex gap-1">
                       {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
-                        // 显示首页、末页、当前页及其前后各2页
+                        // 显示首页、末页、当前页及其前后各1页(移动端)或2页(桌面端)
+                        const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+                        const range = isMobile ? 1 : 2;
                         if (
                           page === 1 ||
                           page === totalPages ||
-                          (page >= currentPage - 2 && page <= currentPage + 2)
+                          (page >= currentPage - range && page <= currentPage + range)
                         ) {
                           return (
                             <button
                               key={page}
                               onClick={() => setCurrentPage(page)}
-                              className={`w-10 h-10 rounded text-sm transition-colors ${
+                              className={`w-8 h-8 sm:w-10 sm:h-10 rounded text-xs sm:text-sm transition-colors ${
                                 currentPage === page
                                   ? 'bg-amber-700 text-white'
                                   : 'border border-stone-300 text-stone-700 hover:bg-stone-50'
@@ -248,10 +251,10 @@ export default function BooksPage() {
                             </button>
                           );
                         } else if (
-                          page === currentPage - 3 ||
-                          page === currentPage + 3
+                          page === currentPage - (range + 1) ||
+                          page === currentPage + (range + 1)
                         ) {
-                          return <span key={page} className="w-10 h-10 flex items-center justify-center text-stone-400">...</span>;
+                          return <span key={page} className="w-6 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-stone-400 text-xs sm:text-sm">...</span>;
                         }
                         return null;
                       })}
@@ -260,10 +263,11 @@ export default function BooksPage() {
                     <button
                       onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                       disabled={currentPage === totalPages}
-                      className="px-4 py-2 border border-stone-300 rounded text-sm text-stone-700 hover:bg-stone-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="px-3 sm:px-4 py-2 border border-stone-300 rounded text-xs sm:text-sm text-stone-700 hover:bg-stone-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                       style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}
                     >
-                      下一页
+                      <span className="hidden sm:inline">下一页</span>
+                      <span className="sm:hidden">下页</span>
                     </button>
                   </div>
                 )}

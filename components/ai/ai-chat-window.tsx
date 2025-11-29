@@ -94,22 +94,22 @@ export function AIChatWindow({ onClose }: AIChatWindowProps) {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 w-96 h-[600px] bg-white rounded-lg shadow-2xl border border-stone-200 flex flex-col z-50">
+    <div className="fixed bottom-0 right-0 sm:bottom-4 sm:right-4 w-full sm:w-96 h-full sm:h-[600px] bg-white sm:rounded-lg shadow-2xl border-t sm:border border-stone-200 flex flex-col z-50">
       {/* 标题栏 */}
-      <div className="flex items-center justify-between px-4 py-3 bg-amber-700 text-white rounded-t-lg">
+      <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 bg-amber-700 text-white sm:rounded-t-lg">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-5 h-5" />
+          <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
           <h3
-            className="text-lg font-bold"
+            className="text-base sm:text-lg font-bold"
             style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}
           >
             AI古籍助手
           </h3>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
           <button
             onClick={() => setMinimized(true)}
-            className="p-1 hover:bg-amber-800 rounded transition-colors"
+            className="p-1 hover:bg-amber-800 rounded transition-colors hidden sm:block"
             title="最小化"
           >
             <Minimize2 className="w-4 h-4" />

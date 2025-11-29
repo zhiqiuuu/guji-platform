@@ -247,24 +247,25 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
   return (
     <div className="h-screen flex flex-col">
       {/* 顶部工具栏 */}
-      <div className="bg-white border-b shadow-sm p-3 flex-shrink-0">
-        <div className="flex items-center justify-between gap-4">
+      <div className="bg-white border-b shadow-sm p-2 sm:p-3 flex-shrink-0">
+        <div className="flex items-center justify-between gap-2 sm:gap-4">
           {/* 左侧: 返回 + 书籍信息 */}
-          <div className="flex items-center gap-3 flex-1 min-w-0">
+          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
             <Button
               variant="outline"
               size="sm"
               onClick={() => router.back()}
+              className="px-2 sm:px-3"
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              返回
+              <ArrowLeft className="h-4 w-4 sm:mr-2" />
+              <span className="hidden sm:inline">返回</span>
             </Button>
 
-            <div className="flex items-center gap-2 flex-1 min-w-0">
-              <BookOpen className="h-5 w-5 text-amber-600 flex-shrink-0" />
+            <div className="flex items-center gap-1 sm:gap-2 flex-1 min-w-0">
+              <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600 flex-shrink-0" />
               <div className="flex-1 min-w-0">
-                <h1 className="text-lg font-bold text-gray-900 truncate">{book.title}</h1>
-                <p className="text-xs text-gray-600 truncate">
+                <h1 className="text-sm sm:text-lg font-bold text-gray-900 truncate">{book.title}</h1>
+                <p className="text-xs text-gray-600 truncate hidden sm:block">
                   {book.author} · {book.dynasty}
                 </p>
               </div>
@@ -272,13 +273,14 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
           </div>
 
           {/* 右侧: 工具按钮 */}
-          <div className="flex items-center gap-2 flex-shrink-0">
+          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
             {/* 面板切换 */}
             <Button
               variant="outline"
               size="sm"
               onClick={() => setShowLeftPanel(!showLeftPanel)}
               title={showLeftPanel ? '隐藏目录' : '显示目录'}
+              className="px-2"
             >
               {showLeftPanel ? <PanelLeftClose className="h-4 w-4" /> : <PanelLeft className="h-4 w-4" />}
             </Button>
@@ -288,6 +290,7 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
               size="sm"
               onClick={() => setShowRightPanel(!showRightPanel)}
               title={showRightPanel ? '隐藏释文' : '显示释文'}
+              className="px-2"
             >
               {showRightPanel ? <PanelRightClose className="h-4 w-4" /> : <PanelRight className="h-4 w-4" />}
             </Button>
@@ -297,6 +300,7 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
               variant="outline"
               size="sm"
               onClick={toggleFullscreen}
+              className="px-2 hidden sm:flex"
             >
               {isFullscreen ? <Minimize className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
             </Button>
@@ -308,19 +312,10 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
                 size="sm"
                 onClick={toggleBookshelf}
                 disabled={bookshelfLoading}
-                className="gap-2"
+                className="gap-1 sm:gap-2 px-2 sm:px-3"
               >
-                {inBookshelf ? (
-                  <>
-                    <Heart className="h-4 w-4 fill-current" />
-                    已收藏
-                  </>
-                ) : (
-                  <>
-                    <Heart className="h-4 w-4" />
-                    收藏
-                  </>
-                )}
+                <Heart className="h-4 w-4 fill-current" />
+                <span className="hidden sm:inline">{inBookshelf ? '已收藏' : '收藏'}</span>
               </Button>
             )}
           </div>
@@ -329,15 +324,22 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
 
       {/* 主内容区 - 三栏布局 */}
       <div className="flex-1 flex overflow-hidden relative">
-        {/* 左侧目录栏 */}
+        {/* 左侧目录栏 - 移动端显示为浮层 */}
         {showLeftPanel && (
-          <div className="w-64 border-r bg-white flex-shrink-0 overflow-hidden">
-            <ChapterList
-              chapters={chapters}
-              currentPage={currentPage}
-              onChapterClick={(page) => setCurrentPage(page)}
+          <>
+            {/* 移动端遮罩层 */}
+            <div
+              className="md:hidden fixed inset-0 bg-black/50 z-40"
+              onClick={() => setShowLeftPanel(false)}
             />
-          </div>
+            <div className="w-64 md:w-64 border-r bg-white flex-shrink-0 overflow-hidden md:relative absolute left-0 top-0 bottom-0 z-50">
+              <ChapterList
+                chapters={chapters}
+                currentPage={currentPage}
+                onChapterClick={(page) => setCurrentPage(page)}
+              />
+            </div>
+          </>
         )}
 
         {/* 中间阅读区 */}
@@ -372,7 +374,7 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
             </div>
           )}
 
-          {/* 上一篇/下一篇按钮 - 古籍风格 */}
+          {/* 上一篇/下一篇按钮 - 古籍风格,移动端隐藏 */}
           {prevBook && (
             <button
               onClick={() => {
@@ -380,7 +382,7 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
                 const targetUrl = `/books/${prevBook.id}${currentParams.toString() ? `?${currentParams.toString()}` : ''}`;
                 router.push(targetUrl);
               }}
-              className="fixed left-0 top-1/2 -translate-y-1/2 z-40 group"
+              className="hidden sm:block fixed left-0 top-1/2 -translate-y-1/2 z-40 group"
               title={prevBook.title}
             >
               <div className="bg-stone-100 hover:bg-amber-50 border-r border-t border-b border-stone-400 rounded-r-md shadow-md px-2 py-6 transition-all duration-200 group-hover:px-3">
@@ -404,7 +406,7 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
                 const targetUrl = `/books/${nextBook.id}${currentParams.toString() ? `?${currentParams.toString()}` : ''}`;
                 router.push(targetUrl);
               }}
-              className="fixed right-0 top-1/2 -translate-y-1/2 z-40 group"
+              className="hidden sm:block fixed right-0 top-1/2 -translate-y-1/2 z-40 group"
               title={nextBook.title}
             >
               <div className="bg-stone-100 hover:bg-amber-50 border-l border-t border-b border-stone-400 rounded-l-md shadow-md px-2 py-6 transition-all duration-200 group-hover:px-3">
@@ -422,14 +424,21 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
           )}
         </div>
 
-        {/* 右侧释文栏 */}
+        {/* 右侧释文栏 - 移动端显示为浮层 */}
         {showRightPanel && hasOCRText && (
-          <div className="w-96 border-l bg-white flex-shrink-0 overflow-hidden">
-            <TranscriptionPanel
-              text={book.full_text}
-              currentPage={currentPage}
+          <>
+            {/* 移动端遮罩层 */}
+            <div
+              className="md:hidden fixed inset-0 bg-black/50 z-40"
+              onClick={() => setShowRightPanel(false)}
             />
-          </div>
+            <div className="w-full md:w-96 border-l bg-white flex-shrink-0 overflow-hidden md:relative absolute right-0 top-0 bottom-0 z-50">
+              <TranscriptionPanel
+                text={book.full_text}
+                currentPage={currentPage}
+              />
+            </div>
+          </>
         )}
       </div>
 
