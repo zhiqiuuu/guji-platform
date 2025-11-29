@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
 
-// 六个标准类别
-const VALID_CATEGORIES = ['经学', '史学', '掌故', '算学', '舆地', '词章'];
+// 七个标准类别(增加性理)
+const VALID_CATEGORIES = ['经学', '史学', '掌故', '算学', '舆地', '词章', '性理'];
 
 // 验证导入数据
 interface ImportBookData {
@@ -98,7 +98,6 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient(cookieStore);
 
     // 暂时注释掉权限检查,方便导入数据
-    // // 验证用户身份
     // const {
     //   data: { user },
     //   error: authError,
@@ -108,7 +107,6 @@ export async function POST(request: NextRequest) {
     //   return NextResponse.json({ error: '未授权' }, { status: 401 });
     // }
 
-    // // 检查用户是否是管理员
     // const { data: profile } = await supabase
     //   .from('user_profiles')
     //   .select('role')
