@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { chatHTTP } from '@/lib/spark-http';
+import { chatBearer } from '@/lib/spark-bearer';
 
 export const runtime = 'edge';
 
@@ -33,8 +33,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 使用星火 HTTP API (Edge Runtime)
-    const response = await chatHTTP(message, history, {
+    // 使用星火 HTTP API - Bearer Token (Edge Runtime)
+    const response = await chatBearer(message, history, {
       temperature,
       max_tokens,
     });
