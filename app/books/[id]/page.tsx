@@ -245,27 +245,27 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
   const canViewPdf = book.file_type === 'pdf';
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-[100dvh] md:h-screen flex flex-col">
       {/* 顶部工具栏 */}
       <div className="bg-white border-b shadow-sm p-2 sm:p-3 flex-shrink-0">
-        <div className="flex items-center justify-between gap-2 sm:gap-4">
+        <div className="flex items-center justify-between gap-1 sm:gap-3">
           {/* 左侧: 返回 + 书籍信息 */}
-          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+          <div className="flex items-center gap-1 sm:gap-3 flex-1 min-w-0">
             <Button
               variant="outline"
               size="sm"
               onClick={() => router.back()}
-              className="px-2 sm:px-3"
+              className="px-1.5 sm:px-3 h-8"
             >
-              <ArrowLeft className="h-4 w-4 sm:mr-2" />
-              <span className="hidden sm:inline">返回</span>
+              <ArrowLeft className="h-4 w-4 sm:mr-1" />
+              <span className="hidden sm:inline text-xs sm:text-sm">返回</span>
             </Button>
 
             <div className="flex items-center gap-1 sm:gap-2 flex-1 min-w-0">
-              <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600 flex-shrink-0" />
+              <BookOpen className="h-3.5 w-3.5 sm:h-5 sm:w-5 text-amber-600 flex-shrink-0" />
               <div className="flex-1 min-w-0">
-                <h1 className="text-sm sm:text-lg font-bold text-gray-900 truncate">{book.title}</h1>
-                <p className="text-xs text-gray-600 truncate hidden sm:block">
+                <h1 className="text-xs sm:text-base font-bold text-gray-900 truncate leading-tight">{book.title}</h1>
+                <p className="text-[10px] sm:text-xs text-gray-600 truncate hidden sm:block">
                   {book.author} · {book.dynasty}
                 </p>
               </div>
@@ -273,34 +273,38 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
           </div>
 
           {/* 右侧: 工具按钮 */}
-          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
-            {/* 面板切换 */}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowLeftPanel(!showLeftPanel)}
-              title={showLeftPanel ? '隐藏目录' : '显示目录'}
-              className="px-2"
-            >
-              {showLeftPanel ? <PanelLeftClose className="h-4 w-4" /> : <PanelLeft className="h-4 w-4" />}
-            </Button>
+          <div className="flex items-center gap-0.5 sm:gap-2 flex-shrink-0">
+            {/* 面板切换 - 移动端只显示图标 */}
+            {hasOCRText && (
+              <>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowLeftPanel(!showLeftPanel)}
+                  title={showLeftPanel ? '隐藏目录' : '显示目录'}
+                  className="px-1.5 sm:px-2 h-8"
+                >
+                  {showLeftPanel ? <PanelLeftClose className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <PanelLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
+                </Button>
 
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowRightPanel(!showRightPanel)}
-              title={showRightPanel ? '隐藏释文' : '显示释文'}
-              className="px-2"
-            >
-              {showRightPanel ? <PanelRightClose className="h-4 w-4" /> : <PanelRight className="h-4 w-4" />}
-            </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowRightPanel(!showRightPanel)}
+                  title={showRightPanel ? '隐藏释文' : '显示释文'}
+                  className="px-1.5 sm:px-2 h-8"
+                >
+                  {showRightPanel ? <PanelRightClose className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <PanelRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
+                </Button>
+              </>
+            )}
 
-            {/* 全屏 */}
+            {/* 全屏 - 桌面端显示 */}
             <Button
               variant="outline"
               size="sm"
               onClick={toggleFullscreen}
-              className="px-2 hidden sm:flex"
+              className="px-2 h-8 hidden md:flex"
             >
               {isFullscreen ? <Minimize className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
             </Button>
@@ -312,10 +316,10 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
                 size="sm"
                 onClick={toggleBookshelf}
                 disabled={bookshelfLoading}
-                className="gap-1 sm:gap-2 px-2 sm:px-3"
+                className="gap-1 px-1.5 sm:px-3 h-8"
               >
-                <Heart className="h-4 w-4 fill-current" />
-                <span className="hidden sm:inline">{inBookshelf ? '已收藏' : '收藏'}</span>
+                <Heart className={cn("h-3.5 w-3.5 sm:h-4 sm:w-4", inBookshelf && "fill-current")} />
+                <span className="hidden sm:inline text-xs sm:text-sm">{inBookshelf ? '已收藏' : '收藏'}</span>
               </Button>
             )}
           </div>
@@ -332,7 +336,7 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
               className="md:hidden fixed inset-0 bg-black/50 z-40"
               onClick={() => setShowLeftPanel(false)}
             />
-            <div className="w-64 md:w-64 border-r bg-white flex-shrink-0 overflow-hidden md:relative absolute left-0 top-0 bottom-0 z-50">
+            <div className="w-4/5 max-w-xs md:w-64 border-r bg-white flex-shrink-0 overflow-hidden md:relative absolute left-0 top-0 bottom-0 z-50 shadow-xl md:shadow-none">
               <ChapterList
                 chapters={chapters}
                 currentPage={currentPage}
@@ -432,7 +436,7 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
               className="md:hidden fixed inset-0 bg-black/50 z-40"
               onClick={() => setShowRightPanel(false)}
             />
-            <div className="w-full md:w-96 border-l bg-white flex-shrink-0 overflow-hidden md:relative absolute right-0 top-0 bottom-0 z-50">
+            <div className="w-4/5 max-w-sm md:w-96 border-l bg-white flex-shrink-0 overflow-hidden md:relative absolute right-0 top-0 bottom-0 z-50 shadow-xl md:shadow-none">
               <TranscriptionPanel
                 text={book.full_text}
                 currentPage={currentPage}

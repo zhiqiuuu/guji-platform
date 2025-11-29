@@ -72,9 +72,9 @@ export function BookCard({ book, filters }: BookCardProps) {
 
   return (
     <Link href={bookUrl} className="group block">
-      <div className="flex gap-4 py-5 px-6 bg-white border-b border-stone-200 hover:bg-amber-50/30 transition-colors">
+      <div className="flex gap-2 sm:gap-4 py-3 sm:py-5 px-3 sm:px-6 bg-white border-b border-stone-200 hover:bg-amber-50/30 transition-colors">
         {/* 左侧封面缩略图 */}
-        <div className="flex-shrink-0 w-16 h-20 relative overflow-hidden shadow-sm">
+        <div className="flex-shrink-0 w-12 h-16 sm:w-16 sm:h-20 relative overflow-hidden shadow-sm">
           <BookCover book={book} width={64} height={80} className="w-full h-full" />
         </div>
 
@@ -82,7 +82,7 @@ export function BookCard({ book, filters }: BookCardProps) {
         <div className="flex-1 min-w-0 flex flex-col justify-center">
           {/* 书名主标题 */}
           <h3
-            className="text-lg text-stone-900 mb-1.5 group-hover:text-amber-800 transition-colors"
+            className="text-sm sm:text-base md:text-lg text-stone-900 mb-1 sm:mb-1.5 group-hover:text-amber-800 transition-colors leading-snug"
             style={{
               fontFamily: '"FangSong", "STFangsong", "仿宋", serif',
               fontWeight: 400
@@ -90,22 +90,22 @@ export function BookCard({ book, filters }: BookCardProps) {
           >
             {subject}
             {category && (
-              <span className="ml-2 text-sm text-amber-700 border border-amber-700 rounded px-1.5 py-0.5">
+              <span className="ml-1.5 sm:ml-2 text-xs sm:text-sm text-amber-700 border border-amber-700 rounded px-1 sm:px-1.5 py-0.5 whitespace-nowrap">
                 {category}
               </span>
             )}
           </h3>
 
           {/* 作者和朝代信息 */}
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-stone-600">
+          <div className="flex flex-wrap items-center gap-x-2 sm:gap-x-3 gap-y-0.5 sm:gap-y-1 text-xs sm:text-sm text-stone-600">
             {metadata && (
-              <span>{metadata}</span>
+              <span className="truncate">{metadata}</span>
             )}
             {author && (
-              <span>{author}</span>
+              <span className="truncate">{author}</span>
             )}
             {dynasty && (
-              <span>{dynasty}</span>
+              <span className="truncate">{dynasty}</span>
             )}
           </div>
         </div>
