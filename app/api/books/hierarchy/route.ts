@@ -75,13 +75,20 @@ export async function GET(request: NextRequest) {
       const batchSize = 1000;
 
       while (true) {
-        const { data: batch, error: yearError } = await supabase
+        let query = supabase
           .from('books')
           .select('year')
           .eq('academy', academy)
           .not('year', 'is', null)
           .order('year')
           .range(offset, offset + batchSize - 1);
+
+        // 如果指定了library_type,添加过滤
+        if (libraryType) {
+          query = query.eq('library_type', libraryType);
+        }
+
+        const { data: batch, error: yearError } = await query;
 
         if (yearError) throw yearError;
 
@@ -114,7 +121,7 @@ export async function GET(request: NextRequest) {
 
     if (academy && year && !season) {
       // 返回指定年份下的季节
-      const { data: seasons, error: seasonError } = await supabase
+      let query = supabase
         .from('books')
         .select('season')
         .eq('academy', academy)
@@ -122,6 +129,13 @@ export async function GET(request: NextRequest) {
         .not('season', 'is', null)
         .order('season')
         .limit(10000);
+
+      // 如果指定了library_type,添加过滤
+      if (libraryType) {
+        query = query.eq('library_type', libraryType);
+      }
+
+      const { data: seasons, error: seasonError } = await query;
 
       if (seasonError) throw seasonError;
 
@@ -148,7 +162,7 @@ export async function GET(request: NextRequest) {
 
     if (academy && year && season && !category) {
       // 返回指定季节下的类别
-      const { data: categories, error: categoryError } = await supabase
+      let query = supabase
         .from('books')
         .select('category')
         .eq('academy', academy)
@@ -157,6 +171,13 @@ export async function GET(request: NextRequest) {
         .not('category', 'is', null)
         .order('category')
         .limit(10000);
+
+      // 如果指定了library_type,添加过滤
+      if (libraryType) {
+        query = query.eq('library_type', libraryType);
+      }
+
+      const { data: categories, error: categoryError } = await query;
 
       if (categoryError) throw categoryError;
 
@@ -178,7 +199,7 @@ export async function GET(request: NextRequest) {
 
     if (academy && year && season && category) {
       // 返回指定类别下的题目
-      const { data: subjects, error: subjectError } = await supabase
+      let query = supabase
         .from('books')
         .select('subject')
         .eq('academy', academy)
@@ -188,6 +209,13 @@ export async function GET(request: NextRequest) {
         .not('subject', 'is', null)
         .order('subject')
         .limit(10000);
+
+      // 如果指定了library_type,添加过滤
+      if (libraryType) {
+        query = query.eq('library_type', libraryType);
+      }
+
+      const { data: subjects, error: subjectError } = await query;
 
       if (subjectError) throw subjectError;
 

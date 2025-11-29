@@ -372,7 +372,7 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
             </div>
           )}
 
-          {/* 上一篇/下一篇按钮 - 简洁版 */}
+          {/* 上一篇/下一篇按钮 - 古籍风格 */}
           {prevBook && (
             <button
               onClick={() => {
@@ -380,14 +380,17 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
                 const targetUrl = `/books/${prevBook.id}${currentParams.toString() ? `?${currentParams.toString()}` : ''}`;
                 router.push(targetUrl);
               }}
-              className="fixed left-2 top-1/2 -translate-y-1/2 z-50 group"
+              className="fixed left-0 top-1/2 -translate-y-1/2 z-40 group"
               title={prevBook.title}
             >
-              <div className="bg-amber-600 hover:bg-amber-700 text-white rounded-r-lg shadow-lg px-3 py-8 transition-all duration-200 group-hover:px-4">
-                <div className="flex flex-col items-center gap-2">
-                  <ChevronLeft className="h-6 w-6" />
-                  <div className="writing-mode-vertical text-xs font-medium whitespace-nowrap overflow-hidden max-h-32">
-                    {prevBook.title.slice(0, 15)}{prevBook.title.length > 15 ? '...' : ''}
+              <div className="bg-stone-100 hover:bg-amber-50 border-r border-t border-b border-stone-400 rounded-r-md shadow-md px-2 py-6 transition-all duration-200 group-hover:px-3">
+                <div className="flex flex-col items-center gap-3">
+                  <ChevronLeft className="h-5 w-5 text-stone-800 group-hover:text-amber-800" />
+                  <div
+                    className="writing-mode-vertical text-xs text-stone-900 group-hover:text-amber-900 font-medium whitespace-nowrap overflow-hidden max-h-40"
+                    style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}
+                  >
+                    {prevBook.title.slice(0, 20)}{prevBook.title.length > 20 ? '...' : ''}
                   </div>
                 </div>
               </div>
@@ -401,14 +404,17 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
                 const targetUrl = `/books/${nextBook.id}${currentParams.toString() ? `?${currentParams.toString()}` : ''}`;
                 router.push(targetUrl);
               }}
-              className="fixed right-2 top-1/2 -translate-y-1/2 z-50 group"
+              className="fixed right-0 top-1/2 -translate-y-1/2 z-40 group"
               title={nextBook.title}
             >
-              <div className="bg-amber-600 hover:bg-amber-700 text-white rounded-l-lg shadow-lg px-3 py-8 transition-all duration-200 group-hover:px-4">
-                <div className="flex flex-col items-center gap-2">
-                  <ChevronRight className="h-6 w-6" />
-                  <div className="writing-mode-vertical text-xs font-medium whitespace-nowrap overflow-hidden max-h-32">
-                    {nextBook.title.slice(0, 15)}{nextBook.title.length > 15 ? '...' : ''}
+              <div className="bg-stone-100 hover:bg-amber-50 border-l border-t border-b border-stone-400 rounded-l-md shadow-md px-2 py-6 transition-all duration-200 group-hover:px-3">
+                <div className="flex flex-col items-center gap-3">
+                  <ChevronRight className="h-5 w-5 text-stone-800 group-hover:text-amber-800" />
+                  <div
+                    className="writing-mode-vertical text-xs text-stone-900 group-hover:text-amber-900 font-medium whitespace-nowrap overflow-hidden max-h-40"
+                    style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}
+                  >
+                    {nextBook.title.slice(0, 20)}{nextBook.title.length > 20 ? '...' : ''}
                   </div>
                 </div>
               </div>

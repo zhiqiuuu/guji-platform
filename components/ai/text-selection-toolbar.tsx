@@ -9,10 +9,14 @@ export function TextSelectionToolbar() {
   const [position, setPosition] = useState<{ x: number; y: number } | null>(null);
   const [loading, setLoading] = useState(false);
   const [aiResult, setAiResult] = useState<{ title: string; content: string } | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const toolbarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleMouseUp = () => {
+      // 如果正在显示 AI 结果对话框,不处理文本选择
+      if (isDialogOpen) return;
+
       const selection = window.getSelection();
       const text = selection?.toString().trim();
 
@@ -32,6 +36,9 @@ export function TextSelectionToolbar() {
     };
 
     const handleMouseDown = (e: MouseEvent) => {
+      // 如果正在显示 AI 结果对话框,不处理鼠标点击
+      if (isDialogOpen) return;
+
       if (toolbarRef.current && !toolbarRef.current.contains(e.target as Node)) {
         setSelectedText('');
         setPosition(null);
@@ -45,7 +52,7 @@ export function TextSelectionToolbar() {
       document.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('mousedown', handleMouseDown);
     };
-  }, []);
+  }, [isDialogOpen]);
 
   const handleInterpret = async () => {
     if (!selectedText) return;
@@ -63,10 +70,14 @@ export function TextSelectionToolbar() {
       const data = await response.json();
 
       if (data.success) {
-        setAiResult({
+        console.log('AI解读成功, 内容:', data.content);
+        const result = {
           title: 'AI解读',
           content: data.content
-        });
+        };
+        setAiResult(result);
+        setIsDialogOpen(true);
+        console.log('设置 isDialogOpen 为 true, aiResult:', result);
         setPosition(null);
         setSelectedText('');
       } else {
@@ -99,6 +110,7 @@ export function TextSelectionToolbar() {
           title: 'AI翻译',
           content: data.content
         });
+        setIsDialogOpen(true);
         setPosition(null);
         setSelectedText('');
       } else {
@@ -111,58 +123,65 @@ export function TextSelectionToolbar() {
     }
   };
 
-  if (!position || !selectedText) return null;
+  const handleCloseDialog = () => {
+    setAiResult(null);
+    setIsDialogOpen(false);
+  };
+
+  console.log('渲染 TextSelectionToolbar, aiResult:', aiResult, 'isDialogOpen:', isDialogOpen);
 
   return (
     <>
-      <div
-        ref={toolbarRef}
-        className="fixed z-50 bg-white rounded-lg shadow-lg border border-stone-200 px-2 py-1.5 flex items-center gap-2"
-        style={{
-          left: `${position.x}px`,
-          top: `${position.y}px`,
-          transform: 'translate(-50%, -100%)'
-        }}
-      >
-        {loading ? (
-          <div className="px-3 py-1.5 flex items-center gap-2 text-stone-600">
-            <Loader2 className="w-4 h-4 animate-spin" />
-            <span className="text-xs" style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}>
-              处理中...
-            </span>
-          </div>
-        ) : (
-          <>
-            <button
-              onClick={handleInterpret}
-              className="px-3 py-1.5 hover:bg-amber-50 rounded transition-colors flex items-center gap-1.5 text-stone-700"
-              title="AI解读"
-            >
-              <Sparkles className="w-4 h-4" />
-              <span className="text-xs" style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}>
-                AI解读
+      {position && selectedText && (
+        <div
+          ref={toolbarRef}
+          className="fixed z-50 bg-white rounded-lg shadow-lg border border-stone-200 px-2 py-1.5 flex items-center gap-2"
+          style={{
+            left: `${position.x}px`,
+            top: `${position.y}px`,
+            transform: 'translate(-50%, -100%)'
+          }}
+        >
+          {loading ? (
+            <div className="px-3 py-1.5 flex items-center gap-2 text-stone-900">
+              <Loader2 className="w-5 h-5 animate-spin" />
+              <span className="text-sm font-semibold" style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}>
+                处理中...
               </span>
-            </button>
-            <div className="w-px h-4 bg-stone-200"></div>
-            <button
-              onClick={handleTranslate}
-              className="px-3 py-1.5 hover:bg-amber-50 rounded transition-colors flex items-center gap-1.5 text-stone-700"
-              title="AI翻译"
-            >
-              <Languages className="w-4 h-4" />
-              <span className="text-xs" style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}>
-                AI翻译
-              </span>
-            </button>
-          </>
-        )}
-      </div>
+            </div>
+          ) : (
+            <>
+              <button
+                onClick={handleInterpret}
+                className="px-3 py-2 hover:bg-amber-50 rounded transition-colors flex items-center gap-2 text-stone-900 hover:text-amber-900"
+                title="AI解读"
+              >
+                <Sparkles className="w-5 h-5" />
+                <span className="text-sm font-semibold" style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}>
+                  AI解读
+                </span>
+              </button>
+              <div className="w-px h-5 bg-stone-300"></div>
+              <button
+                onClick={handleTranslate}
+                className="px-3 py-2 hover:bg-amber-50 rounded transition-colors flex items-center gap-2 text-stone-900 hover:text-amber-900"
+                title="AI翻译"
+              >
+                <Languages className="w-5 h-5" />
+                <span className="text-sm font-semibold" style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}>
+                  AI翻译
+                </span>
+              </button>
+            </>
+          )}
+        </div>
+      )}
 
-      {aiResult && (
+      {aiResult && isDialogOpen && (
         <AIResultDialog
           title={aiResult.title}
           content={aiResult.content}
-          onClose={() => setAiResult(null)}
+          onClose={handleCloseDialog}
         />
       )}
     </>

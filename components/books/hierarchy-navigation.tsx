@@ -139,36 +139,34 @@ export function HierarchyNavigation({
 
       if (node.level === 2) {
         // 点击书院时，获取年份数据
-        children = await fetchHierarchy({ academy: node.value });
+        const libraryType = selectedFilters.libraryType || node.libraryType;
+        const params: Record<string, string> = { academy: node.value };
+        if (libraryType) params.library_type = libraryType;
+        children = await fetchHierarchy(params);
       } else if (node.level === 3) {
         // 点击年份时，获取季节数据
         const academy = selectedFilters.academy || getNodeAcademy(node) || '';
-        children = await fetchHierarchy({
-          academy,
-          year: node.value
-        });
+        const libraryType = selectedFilters.libraryType;
+        const params: Record<string, string> = { academy, year: node.value };
+        if (libraryType) params.library_type = libraryType;
+        children = await fetchHierarchy(params);
       } else if (node.level === 4) {
         // 点击季节时，获取类别数据
         const academy = selectedFilters.academy || getNodeAcademy(node) || '';
         const year = selectedFilters.year || getNodeYear(node) || '';
-
-        children = await fetchHierarchy({
-          academy,
-          year,
-          season: node.value
-        });
+        const libraryType = selectedFilters.libraryType;
+        const params: Record<string, string> = { academy, year, season: node.value };
+        if (libraryType) params.library_type = libraryType;
+        children = await fetchHierarchy(params);
       } else if (node.level === 5) {
         // 点击类别时，获取题目数据
         const academy = selectedFilters.academy || getNodeAcademy(node) || '';
         const year = selectedFilters.year || getNodeYear(node) || '';
         const season = selectedFilters.season || getNodeSeason(node) || '';
-
-        children = await fetchHierarchy({
-          academy,
-          year,
-          season,
-          category: node.value
-        });
+        const libraryType = selectedFilters.libraryType;
+        const params: Record<string, string> = { academy, year, season, category: node.value };
+        if (libraryType) params.library_type = libraryType;
+        children = await fetchHierarchy(params);
       }
 
       // 更新层级结构

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { KimiService, AI_PROMPTS } from '@/lib/kimi';
+import { AI_PROMPTS } from '@/lib/kimi';
+import { chat } from '@/lib/spark';
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,13 +13,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const kimiService = new KimiService();
-
-    const response = await kimiService.chat({
-      messages: [
-        { role: 'user', content: AI_PROMPTS.INTERPRET(text) }
-      ]
-    });
+    const response = await chat(AI_PROMPTS.INTERPRET(text), []);
 
     return NextResponse.json({
       content: response,

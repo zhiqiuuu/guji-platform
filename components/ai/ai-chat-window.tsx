@@ -17,7 +17,7 @@ export function AIChatWindow({ onClose }: AIChatWindowProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: '你好!我是古籍研究助手,可以帮你解答关于古籍的各种问题。请问有什么我可以帮助你的吗?'
+      content: '您好!我是古籍典藏的智能助手。本系统收录了2716部晚清书院文献,包括课题库和课艺库。我可以帮您:\n\n• 查询古籍收藏情况\n• 了解晚清书院教育\n• 解读课题和课艺内容\n• 翻译古文\n\n请问有什么可以帮到您?'
     }
   ]);
   const [input, setInput] = useState('');
@@ -48,18 +48,16 @@ export function AIChatWindow({ onClose }: AIChatWindowProps) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          messages: [
-            { role: 'system', content: AI_PROMPTS.CHAT() },
-            ...messages.map(m => ({ role: m.role, content: m.content })),
-            { role: 'user', content: input }
-          ]
+          message: input,
+          history: messages.map(m => ({ role: m.role, content: m.content })),
+          stream: false
         })
       });
 
       const data = await response.json();
 
       if (data.success) {
-        setMessages(prev => [...prev, { role: 'assistant', content: data.content }]);
+        setMessages(prev => [...prev, { role: 'assistant', content: data.message }]);
       } else {
         throw new Error(data.error || '请求失败');
       }
@@ -89,7 +87,7 @@ export function AIChatWindow({ onClose }: AIChatWindowProps) {
           style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}
         >
           <Sparkles className="w-5 h-5" />
-          <span>AI助手</span>
+          <span className="text-base font-semibold">AI助手</span>
         </button>
       </div>
     );
@@ -102,7 +100,7 @@ export function AIChatWindow({ onClose }: AIChatWindowProps) {
         <div className="flex items-center gap-2">
           <Sparkles className="w-5 h-5" />
           <h3
-            className="font-medium"
+            className="text-lg font-bold"
             style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}
           >
             AI古籍助手
@@ -134,27 +132,46 @@ export function AIChatWindow({ onClose }: AIChatWindowProps) {
             className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[80%] px-4 py-2 rounded-lg ${
+              className={`max-w-[80%] px-4 py-3 rounded-lg ${
                 message.role === 'user'
                   ? 'bg-amber-700 text-white'
-                  : 'bg-stone-100 text-stone-900'
+                  : 'bg-stone-100'
               }`}
               style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}
             >
-              <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+              <p
+                className="whitespace-pre-wrap leading-relaxed"
+                style={{
+                  fontSize: '16px',
+                  lineHeight: '1.9',
+                  fontWeight: '600',
+                  color: message.role === 'user' ? '#ffffff' : '#0c0a09'
+                }}
+              >
+                {message.content}
+              </p>
             </div>
           </div>
         ))}
         {loading && (
           <div className="flex justify-start">
-            <div className="bg-stone-100 px-4 py-2 rounded-lg">
+            <div className="bg-stone-100 px-4 py-3 rounded-lg">
               <div className="flex items-center gap-2">
                 <div className="flex gap-1">
-                  <div className="w-2 h-2 bg-stone-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                  <div className="w-2 h-2 bg-stone-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                  <div className="w-2 h-2 bg-stone-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                  <div className="w-2 h-2 bg-stone-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                  <div className="w-2 h-2 bg-stone-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                  <div className="w-2 h-2 bg-stone-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
                 </div>
-                <span className="text-xs text-stone-600">思考中...</span>
+                <span
+                  style={{
+                    fontFamily: '"FangSong", "STFangsong", "仿宋", serif',
+                    fontSize: '15px',
+                    fontWeight: '600',
+                    color: '#0c0a09'
+                  }}
+                >
+                  思考中...
+                </span>
               </div>
             </div>
           </div>
@@ -171,7 +188,13 @@ export function AIChatWindow({ onClose }: AIChatWindowProps) {
             onKeyPress={handleKeyPress}
             placeholder="输入你的问题..."
             className="flex-1 px-3 py-2 border border-stone-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
-            style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}
+            style={{
+              fontFamily: '"FangSong", "STFangsong", "仿宋", serif',
+              fontSize: '16px',
+              lineHeight: '1.7',
+              fontWeight: '500',
+              color: '#0c0a09'
+            }}
             rows={2}
             disabled={loading}
           />
@@ -180,7 +203,7 @@ export function AIChatWindow({ onClose }: AIChatWindowProps) {
             disabled={!input.trim() || loading}
             className="px-4 py-2 bg-amber-700 text-white rounded-lg hover:bg-amber-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-5 h-5" />
           </button>
         </div>
       </div>
