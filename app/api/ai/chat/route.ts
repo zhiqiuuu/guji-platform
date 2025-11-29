@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { chatEdge } from '@/lib/spark-edge';
+import { chatHTTP } from '@/lib/spark-http';
 
 export const runtime = 'edge';
 
@@ -33,8 +33,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 使用 Edge Runtime 兼容的实现
-    const response = await chatEdge(message, history, {
+    // 使用 HTTP API 实现,兼容 Vercel Edge Runtime
+    const response = await chatHTTP(message, history, {
       temperature,
       max_tokens,
     });
