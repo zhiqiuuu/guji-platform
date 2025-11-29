@@ -7,6 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
 import type { Book, LibraryType } from '@/types';
 
+type SortOption = 'default' | 'year-asc' | 'year-desc' | 'category' | 'author' | 'season';
+
 export default function BooksPage() {
   const [books, setBooks] = useState<Book[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -18,6 +20,7 @@ export default function BooksPage() {
     category?: string;
     subject?: string;
   }>({});
+  const [sortBy, setSortBy] = useState<SortOption>('default');
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -56,11 +59,31 @@ export default function BooksPage() {
     setCurrentPage(1); // 重置到第一页
   }, [searchQuery, filters]);
 
+  // 排序逻辑
+  const sortedBooks = [...books].sort((a, b) => {
+    switch (sortBy) {
+      case 'year-asc':
+        return (a.year || '').localeCompare(b.year || '');
+      case 'year-desc':
+        return (b.year || '').localeCompare(a.year || '');
+      case 'category':
+        return (a.category || '').localeCompare(b.category || '');
+      case 'author':
+        return (a.author || '').localeCompare(b.author || '');
+      case 'season':
+        // 季节排序: 春 -> 夏 -> 秋 -> 冬
+        const seasonOrder: { [key: string]: number } = { '春': 1, '夏': 2, '秋': 3, '冬': 4 };
+        return (seasonOrder[a.season || ''] || 999) - (seasonOrder[b.season || ''] || 999);
+      default:
+        return 0; // 保持原始顺序
+    }
+  });
+
   // 计算分页数据
-  const totalPages = Math.ceil(books.length / itemsPerPage);
+  const totalPages = Math.ceil(sortedBooks.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentBooks = books.slice(startIndex, endIndex);
+  const currentBooks = sortedBooks.slice(startIndex, endIndex);
 
   return (
     <div className="min-h-screen bg-stone-50">
@@ -105,41 +128,67 @@ export default function BooksPage() {
               </div>
             </div>
 
-            {/* 筛选标签 */}
-            {Object.keys(filters).length > 0 && (
-              <div className="mb-3 flex flex-wrap gap-1.5">
-                {filters.libraryType && (
-                  <span className="px-2.5 py-1 bg-stone-100 text-stone-700 border border-stone-200 rounded text-xs">
-                    {filters.libraryType}
-                  </span>
-                )}
-                {filters.academy && (
-                  <span className="px-2.5 py-1 bg-stone-100 text-stone-700 border border-stone-200 rounded text-xs">
-                    {filters.academy}
-                  </span>
-                )}
-                {filters.year && (
-                  <span className="px-2.5 py-1 bg-stone-100 text-stone-700 border border-stone-200 rounded text-xs">
-                    {filters.year}年
-                  </span>
-                )}
-                {filters.season && (
-                  <span className="px-2.5 py-1 bg-stone-100 text-stone-700 border border-stone-200 rounded text-xs">
-                    {filters.season}
-                  </span>
-                )}
-                {filters.category && (
-                  <span className="px-2.5 py-1 bg-stone-100 text-stone-700 border border-stone-200 rounded text-xs">
-                    {filters.category}
-                  </span>
-                )}
-                {filters.subject && (
-                  <span className="px-2.5 py-1 bg-stone-100 text-stone-700 border border-stone-200 rounded text-xs">
-                    {filters.subject}
-                  </span>
-                )}
+            {/* 筛选标签和排序 */}
+            <div className="mb-3 flex flex-wrap items-center gap-3">
+              {/* 筛选标签 */}
+              {Object.keys(filters).length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {filters.libraryType && (
+                    <span className="px-2.5 py-1 bg-stone-100 text-stone-700 border border-stone-200 rounded text-xs">
+                      {filters.libraryType}
+                    </span>
+                  )}
+                  {filters.academy && (
+                    <span className="px-2.5 py-1 bg-stone-100 text-stone-700 border border-stone-200 rounded text-xs">
+                      {filters.academy}
+                    </span>
+                  )}
+                  {filters.year && (
+                    <span className="px-2.5 py-1 bg-stone-100 text-stone-700 border border-stone-200 rounded text-xs">
+                      {filters.year}年
+                    </span>
+                  )}
+                  {filters.season && (
+                    <span className="px-2.5 py-1 bg-stone-100 text-stone-700 border border-stone-200 rounded text-xs">
+                      {filters.season}
+                    </span>
+                  )}
+                  {filters.category && (
+                    <span className="px-2.5 py-1 bg-stone-100 text-stone-700 border border-stone-200 rounded text-xs">
+                      {filters.category}
+                    </span>
+                  )}
+                  {filters.subject && (
+                    <span className="px-2.5 py-1 bg-stone-100 text-stone-700 border border-stone-200 rounded text-xs">
+                      {filters.subject}
+                    </span>
+                  )}
+                </div>
+              )}
+
+              {/* 排序选择器 */}
+              <div className="ml-auto flex items-center gap-2">
+                <label className="text-xs text-stone-600" style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}>
+                  排序:
+                </label>
+                <select
+                  value={sortBy}
+                  onChange={(e) => {
+                    setSortBy(e.target.value as SortOption);
+                    setCurrentPage(1);
+                  }}
+                  className="px-3 py-1.5 text-xs border border-stone-300 rounded bg-white text-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-700 focus:border-transparent"
+                  style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}
+                >
+                  <option value="default">默认排序</option>
+                  <option value="year-asc">年份升序 ↑</option>
+                  <option value="year-desc">年份降序 ↓</option>
+                  <option value="category">按类别</option>
+                  <option value="author">按作者</option>
+                  <option value="season">按季节</option>
+                </select>
               </div>
-            )}
+            </div>
 
             {/* 书籍列表 */}
             {loading ? (
@@ -156,7 +205,7 @@ export default function BooksPage() {
             ) : (
               <>
                 <p className="text-xs text-stone-600 mb-4 px-6 tracking-wide">
-                  共 {books.length} 部 · 第 {currentPage} / {totalPages} 页
+                  共 {sortedBooks.length} 部 · 第 {currentPage} / {totalPages} 页
                 </p>
                 <div className="bg-white rounded shadow-sm border border-stone-200 overflow-hidden">
                   {currentBooks.map((book) => (
