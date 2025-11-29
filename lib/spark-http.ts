@@ -64,19 +64,18 @@ async function generateAuthHeaders(apiKey: string, apiSecret: string): Promise<R
   const path = '/v1/chat/completions';
   const date = new Date().toUTCString();
 
-  // 构建签名原文
-  const signatureOrigin = `host: ${host}\ndate: ${date}\nPOST ${path} HTTP/1.1`;
+  // 构建签名原文 - 只包含 date 和 request-line
+  const signatureOrigin = `date: ${date}\nPOST ${path} HTTP/1.1`;
 
   // 使用 HMAC-SHA256 进行加密
   const signature = await generateHmacSignature(signatureOrigin, apiSecret);
 
-  // 构建 authorization
-  const authorizationOrigin = `api_key="${apiKey}", algorithm="hmac-sha256", headers="host date request-line", signature="${signature}"`;
+  // 构建 authorization - 只包含 date 和 request-line
+  const authorizationOrigin = `api_key="${apiKey}", algorithm="hmac-sha256", headers="date request-line", signature="${signature}"`;
   const authorization = btoa(authorizationOrigin);
 
   return {
     'Content-Type': 'application/json',
-    'host': host,
     'date': date,
     'authorization': authorization,
   };
