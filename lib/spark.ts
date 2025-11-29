@@ -97,32 +97,32 @@ export async function sendToSpark(params: SparkRequestParams): Promise<string> {
       const ws = new WebSocket(authUrl);
       let fullResponse = '';
 
-      ws.onopen = () => {
+      ws.on('open', () => {
         console.log('WebSocket 连接已建立');
         const requestBody = buildRequestBody(params);
         ws.send(JSON.stringify(requestBody));
-      };
+      });
 
-      ws.onmessage = (event) => {
+      ws.on('message', (data: WebSocket.Data) => {
         try {
-          const data = JSON.parse(event.data);
+          const message = JSON.parse(data.toString());
 
           // 检查错误
-          if (data.header?.code !== 0) {
-            console.error('星火 API 错误:', data.header);
+          if (message.header?.code !== 0) {
+            console.error('星火 API 错误:', message.header);
             ws.close();
-            reject(new Error(`星火 API 错误 (${data.header?.code}): ${data.header?.message || '未知错误'}`));
+            reject(new Error(`星火 API 错误 (${message.header?.code}): ${message.header?.message || '未知错误'}`));
             return;
           }
 
           // 获取文本内容
-          const text = data.payload?.choices?.text || [];
+          const text = message.payload?.choices?.text || [];
           if (text.length > 0) {
             fullResponse += text[0].content || '';
           }
 
           // 检查是否结束
-          if (data.header?.status === 2) {
+          if (message.header?.status === 2) {
             console.log('星火 API 响应完成');
             ws.close();
             resolve(fullResponse);
@@ -132,19 +132,19 @@ export async function sendToSpark(params: SparkRequestParams): Promise<string> {
           ws.close();
           reject(error);
         }
-      };
+      });
 
-      ws.onerror = (error) => {
+      ws.on('error', (error) => {
         console.error('WebSocket 连接错误:', error);
         reject(new Error('WebSocket 连接失败,可能是网络问题或认证失败'));
-      };
+      });
 
-      ws.onclose = (event) => {
-        console.log('WebSocket 连接已关闭:', event.code, event.reason);
+      ws.on('close', (code: number, reason: Buffer) => {
+        console.log('WebSocket 连接已关闭:', code, reason.toString());
         if (!fullResponse) {
           reject(new Error('连接关闭但未收到响应'));
         }
-      };
+      });
 
       // 超时处理 - Vercel 免费版限制 10 秒
       const timeout = process.env.VERCEL ? 9000 : 30000;
@@ -176,27 +176,27 @@ export async function* streamFromSpark(
   let isDone = false;
   let hasError = false;
 
-  ws.onopen = () => {
+  ws.on('open', () => {
     const requestBody = buildRequestBody(params);
     ws.send(JSON.stringify(requestBody));
-  };
+  });
 
-  ws.onmessage = (event) => {
+  ws.on('message', (data: WebSocket.Data) => {
     try {
-      const data = JSON.parse(event.data);
+      const message = JSON.parse(data.toString());
 
       // 检查错误
-      if (data.header?.code !== 0) {
+      if (message.header?.code !== 0) {
         hasError = true;
         ws.close();
         if (rejectChunk) {
-          rejectChunk(new Error(data.header?.message || '星火 API 返回错误'));
+          rejectChunk(new Error(message.header?.message || '星火 API 返回错误'));
         }
         return;
       }
 
       // 获取文本内容
-      const text = data.payload?.choices?.text || [];
+      const text = message.payload?.choices?.text || [];
       if (text.length > 0) {
         const content = text[0].content || '';
         if (content) {
@@ -209,7 +209,7 @@ export async function* streamFromSpark(
       }
 
       // 检查是否结束
-      if (data.header?.status === 2) {
+      if (message.header?.status === 2) {
         isDone = true;
         ws.close();
         if (resolveChunk) {
@@ -224,14 +224,14 @@ export async function* streamFromSpark(
         rejectChunk(error as Error);
       }
     }
-  };
+  });
 
-  ws.onerror = () => {
+  ws.on('error', () => {
     hasError = true;
     if (rejectChunk) {
       rejectChunk(new Error('WebSocket 连接错误'));
     }
-  };
+  });
 
   // 逐个返回数据块
   try {
