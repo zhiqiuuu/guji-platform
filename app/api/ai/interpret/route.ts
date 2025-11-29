@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { AI_PROMPTS } from '@/lib/kimi';
 import { chatBearer } from '@/lib/spark-bearer';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
+export const maxDuration = 60; // 最长60秒超时
 
 export async function POST(request: NextRequest) {
   try {

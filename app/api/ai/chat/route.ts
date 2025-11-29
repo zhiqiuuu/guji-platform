@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { chatBearer } from '@/lib/spark-bearer';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
+export const maxDuration = 60; // 最长60秒超时
 
 interface ChatMessage {
   role: 'user' | 'assistant';
