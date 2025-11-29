@@ -1,6 +1,6 @@
 import type { Category, Dynasty } from '@/types';
 
-export const CATEGORIES: Category[] = ['经学', '史学', '掌故', '算学', '舆地', '词章'];
+export const CATEGORIES: Category[] = ['经学', '史学', '掌故', '算学', '舆地', '词章', '性理'];
 
 export const DYNASTIES: Dynasty[] = [
   '先秦',
@@ -21,6 +21,7 @@ export const CATEGORY_DESCRIPTIONS: Record<Category, string> = {
   算学: '数学计算及天文历法',
   舆地: '地理沿革及山川地貌',
   词章: '诗词文章及文学创作',
+  性理: '性理之学及理学研究',
 };
 
 // 求志书院相关常量

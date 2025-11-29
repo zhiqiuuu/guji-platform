@@ -10,7 +10,7 @@ export type BookParagraph = Database['public']['Tables']['book_paragraphs']['Row
 export type BookParagraphInsert = Database['public']['Tables']['book_paragraphs']['Insert'];
 export type BookParagraphUpdate = Database['public']['Tables']['book_paragraphs']['Update'];
 
-export type Category = '经学' | '史学' | '掌故' | '算学' | '舆地' | '词章';
+export type Category = '经学' | '史学' | '掌故' | '算学' | '舆地' | '词章' | '性理';
 
 export type Dynasty =
   | '先秦'

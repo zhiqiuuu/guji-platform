@@ -59,10 +59,10 @@ export default function Home() {
         <div className="container mx-auto max-w-5xl relative z-10">
           <div className="text-center space-y-4 sm:space-y-6">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 tracking-tight px-4">
-              典藏华夏千年智慧
+              中国课艺数智化工程
             </h1>
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-700 max-w-2xl mx-auto font-serif px-4">
-              个人古籍数字图书馆，收藏、阅读、传承经典
+              晚清书院文献数字化保存与传播平台
             </p>
 
             {/* Search Bar */}
