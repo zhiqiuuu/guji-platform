@@ -12,7 +12,7 @@ export function AIFloatingButton() {
       {!showChat && (
         <button
           onClick={() => setShowChat(true)}
-          className="fixed bottom-6 right-6 w-14 h-14 bg-amber-700 text-white rounded-full shadow-lg hover:bg-amber-800 transition-all hover:scale-110 flex items-center justify-center z-40"
+          className="fixed bottom-20 md:bottom-6 right-6 w-14 h-14 bg-amber-700 text-white rounded-full shadow-lg hover:bg-amber-800 transition-all hover:scale-110 flex items-center justify-center z-40"
           title="AI助手"
         >
           <Sparkles className="w-6 h-6" />
