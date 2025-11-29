@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AI_PROMPTS } from '@/lib/kimi';
-import { chatHTTP } from '@/lib/spark-http';
+import { chat } from '@/lib/spark';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const response = await chatHTTP(AI_PROMPTS.INTERPRET(text), []);
+    const response = await chat(AI_PROMPTS.INTERPRET(text), []);
 
     return NextResponse.json({
       content: response,

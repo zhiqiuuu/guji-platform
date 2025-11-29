@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { chatHTTP } from '@/lib/spark-http';
+import { chat } from '@/lib/spark';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
@@ -33,8 +33,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 使用星火 HTTP API
-    const response = await chatHTTP(message, history, {
+    // 使用星火 WebSocket API (Node.js Runtime)
+    const response = await chat(message, history, {
       temperature,
       max_tokens,
     });
