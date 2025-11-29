@@ -14,6 +14,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const [latestBooks, setLatestBooks] = useState<Book[]>([]);
   const [popularBooks, setPopularBooks] = useState<Book[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchBooks();
@@ -21,29 +22,31 @@ export default function Home() {
 
   const fetchBooks = async () => {
     try {
-      const response = await fetch('/api/books');
-      const data = await response.json();
+      setLoading(true);
+      // 并行获取最新和热门书籍,只获取需要的数量
+      const [latestResponse, popularResponse] = await Promise.all([
+        fetch('/api/books/latest?limit=6'),
+        fetch('/api/books/popular?limit=6')
+      ]);
 
-      // 最新古籍 - 按创建时间排序
-      const sortedByDate = [...data].sort((a, b) =>
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      );
-      setLatestBooks(sortedByDate.slice(0, 6));
+      const [latestData, popularData] = await Promise.all([
+        latestResponse.json(),
+        popularResponse.json()
+      ]);
 
-      // 热门古籍 - 按浏览次数排序
-      const sortedByViews = [...data].sort((a, b) =>
-        (b.view_count || 0) - (a.view_count || 0)
-      );
-      setPopularBooks(sortedByViews.slice(0, 6));
+      setLatestBooks(latestData);
+      setPopularBooks(popularData);
     } catch (error) {
       console.error('Failed to fetch books:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // 跳转到高级搜索页面，支持段落搜索
+      // 跳转到高级搜索页面,支持段落搜索
       router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
     }
   };
@@ -119,7 +122,17 @@ export default function Home() {
             </Button>
           </div>
 
-          {latestBooks.length > 0 ? (
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="bg-white rounded-lg border border-gray-200 p-4 animate-pulse">
+                  <div className="w-full h-48 bg-gray-200 rounded mb-4"></div>
+                  <div className="h-6 bg-gray-200 rounded mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                </div>
+              ))}
+            </div>
+          ) : latestBooks.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {latestBooks.map((book) => (
                 <BookCard key={book.id} book={book} />
@@ -127,7 +140,7 @@ export default function Home() {
             </div>
           ) : (
             <div className="text-center py-12 text-gray-500">
-              暂无古籍，请先上传
+              暂无古籍,请先上传
             </div>
           )}
         </section>
@@ -148,7 +161,17 @@ export default function Home() {
             </Button>
           </div>
 
-          {popularBooks.length > 0 ? (
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="bg-white rounded-lg border border-gray-200 p-4 animate-pulse">
+                  <div className="w-full h-48 bg-gray-200 rounded mb-4"></div>
+                  <div className="h-6 bg-gray-200 rounded mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                </div>
+              ))}
+            </div>
+          ) : popularBooks.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {popularBooks.map((book) => (
                 <BookCard key={book.id} book={book} />
@@ -169,7 +192,7 @@ export default function Home() {
             </div>
             <h3 className="text-lg sm:text-xl font-semibold text-gray-900">海量典藏</h3>
             <p className="text-sm sm:text-base text-gray-600">
-              经史子集，应有尽有，轻松管理您的古籍收藏
+              经史子集,应有尽有,轻松管理您的古籍收藏
             </p>
           </div>
 
@@ -179,7 +202,7 @@ export default function Home() {
             </div>
             <h3 className="text-lg sm:text-xl font-semibold text-gray-900">快速检索</h3>
             <p className="text-sm sm:text-base text-gray-600">
-              按书名、作者、朝代分类，快速找到您需要的古籍
+              按书名、作者、朝代分类,快速找到您需要的古籍
             </p>
           </div>
 
@@ -189,7 +212,7 @@ export default function Home() {
             </div>
             <h3 className="text-lg sm:text-xl font-semibold text-gray-900">简单易用</h3>
             <p className="text-sm sm:text-base text-gray-600">
-              支持PDF、图片上传，在线阅读，随时随地访问
+              支持PDF、图片上传,在线阅读,随时随地访问
             </p>
           </div>
         </section>
@@ -200,7 +223,7 @@ export default function Home() {
             开始您的古籍之旅
           </h2>
           <p className="text-gray-700 mb-6 sm:mb-8 max-w-xl mx-auto text-base sm:text-lg px-4">
-            立即上传您的第一本古籍，或者浏览已有的典藏
+            立即上传您的第一本古籍,或者浏览已有的典藏
           </p>
           <Button size="lg" asChild className="bg-amber-600 hover:bg-amber-700 w-full sm:w-auto">
             <Link href="/books">

@@ -192,8 +192,15 @@ export default function BooksPage() {
 
             {/* 书籍列表 */}
             {loading ? (
-              <div className="text-center py-16">
-                <p className="text-amber-800/60 text-sm tracking-wide">加载中...</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[...Array(9)].map((_, i) => (
+                  <div key={i} className="bg-white rounded-lg border border-gray-200 p-4 animate-pulse">
+                    <div className="w-full h-48 bg-gray-200 rounded mb-4"></div>
+                    <div className="h-6 bg-gray-200 rounded mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-2/3 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                  </div>
+                ))}
               </div>
             ) : books.length === 0 ? (
               <div className="text-center py-16">
