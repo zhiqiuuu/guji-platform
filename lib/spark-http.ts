@@ -1,6 +1,6 @@
 /**
  * 讯飞星火 HTTP API
- * 使用 OpenAI 兼容的 HTTP 接口,适用于 Vercel 部署
+ * 使用完整的 HMAC 签名认证,适用于 Vercel Edge Runtime
  *
  * 参考文档: https://www.xfyun.cn/doc/spark/HTTP调用文档.html
  */
@@ -35,6 +35,54 @@ interface SparkHTTPResponse {
 }
 
 /**
+ * 生成 HMAC-SHA256 签名 (Edge Runtime 兼容)
+ */
+async function generateHmacSignature(data: string, secret: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+
+  const signature = await crypto.subtle.sign(
+    'HMAC',
+    key,
+    encoder.encode(data)
+  );
+
+  return btoa(String.fromCharCode(...new Uint8Array(signature)));
+}
+
+/**
+ * 生成认证 URL
+ */
+async function generateAuthHeaders(apiKey: string, apiSecret: string): Promise<Record<string, string>> {
+  const host = 'spark-api-open.xf-yun.com';
+  const path = '/v1/chat/completions';
+  const date = new Date().toUTCString();
+
+  // 构建签名原文
+  const signatureOrigin = `host: ${host}\ndate: ${date}\nPOST ${path} HTTP/1.1`;
+
+  // 使用 HMAC-SHA256 进行加密
+  const signature = await generateHmacSignature(signatureOrigin, apiSecret);
+
+  // 构建 authorization
+  const authorizationOrigin = `api_key="${apiKey}", algorithm="hmac-sha256", headers="host date request-line", signature="${signature}"`;
+  const authorization = btoa(authorizationOrigin);
+
+  return {
+    'Content-Type': 'application/json',
+    'host': host,
+    'date': date,
+    'authorization': authorization,
+  };
+}
+
+/**
  * 使用 HTTP API 调用星火大模型
  */
 export async function sendToSparkHTTP(
@@ -46,10 +94,6 @@ export async function sendToSparkHTTP(
     max_tokens?: number;
   }
 ): Promise<string> {
-  // 讯飞星火 HTTP API 使用 APIPassword 作为 Bearer token
-  // APIPassword = base64(apiKey:apiSecret)
-  const apiPassword = btoa(`${apiKey}:${apiSecret}`);
-
   const requestBody: SparkHTTPRequest = {
     model: 'lite', // 使用 Lite 模型
     messages: params.messages,
@@ -60,12 +104,12 @@ export async function sendToSparkHTTP(
 
   console.log('正在调用星火 HTTP API...');
 
+  // 生成认证头
+  const headers = await generateAuthHeaders(apiKey, apiSecret);
+
   const response = await fetch('https://spark-api-open.xf-yun.com/v1/chat/completions', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiPassword}`,
-    },
+    headers,
     body: JSON.stringify(requestBody),
   });
 
