@@ -914,3 +914,5 @@ Error: ENOENT: no such file or directory, open 'D:\work\keyi\guji-platform\.next
  ✓ Compiled in 74ms
  ✓ Compiled in 64ms
  ✓ Compiled in 134ms
+   Reload env: .env.local
+ ✓ Compiled in 1112ms

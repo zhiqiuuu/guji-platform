@@ -13,8 +13,8 @@ const notoSerifSC = Noto_Serif_SC({
 });
 
 export const metadata: Metadata = {
-  title: process.env.NEXT_PUBLIC_SITE_NAME || '古籍典藏',
-  description: process.env.NEXT_PUBLIC_SITE_DESCRIPTION || '个人古籍数字图书馆',
+  title: process.env.NEXT_PUBLIC_SITE_NAME || '课艺典藏',
+  description: process.env.NEXT_PUBLIC_SITE_DESCRIPTION || '中国古籍数智化工程',
 };
 
 export default function RootLayout({

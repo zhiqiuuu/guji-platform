@@ -17,7 +17,7 @@ export function AIChatWindow({ onClose }: AIChatWindowProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: '您好!我是古籍典藏的智能助手。本系统收录了2716部晚清书院文献,包括课题库和课艺库。我可以帮您:\n\n• 查询古籍收藏情况\n• 了解晚清书院教育\n• 解读课题和课艺内容\n• 翻译古文\n\n请问有什么可以帮到您?'
+      content: '您好!我是课艺典藏的智能助手。本系统收录了2716部晚清书院文献,包括课题库和课艺库。我可以帮您:\n\n• 查询课艺收藏情况\n• 了解晚清书院教育\n• 解读课题和课艺内容\n• 翻译古文\n\n请问有什么可以帮到您?'
     }
   ]);
   const [input, setInput] = useState('');

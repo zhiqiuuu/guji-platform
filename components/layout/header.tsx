@@ -44,7 +44,7 @@ export function Header() {
           <Link href="/" className="flex items-center space-x-2">
             <Book className="h-6 w-6 text-amber-600" />
             <span className="text-lg sm:text-xl font-bold text-gray-900 whitespace-nowrap">
-              {process.env.NEXT_PUBLIC_SITE_NAME || '古籍典藏'}
+              {process.env.NEXT_PUBLIC_SITE_NAME || '课艺典藏'}
             </span>
           </Link>
 
