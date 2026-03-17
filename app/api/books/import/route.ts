@@ -18,6 +18,13 @@ interface ImportBookData {
   description?: string;
   file_url?: string;
   file_type?: string;
+  full_text?: string;
+  rank?: string;
+  author_brief?: string;
+  author_detail?: string;
+  reviewer?: string;
+  reviewer_info?: string;
+  review_content?: string;
 }
 
 function validateBookData(data: any): { valid: boolean; errors: string[] } {
@@ -158,7 +165,7 @@ export async function POST(request: NextRequest) {
           ...book,
           title: generateTitle(book),
           custom_hierarchy: buildCustomHierarchy(book),
-          has_full_text: book.library_type === '课艺库' && !!book.file_url,
+          has_full_text: !!(book.full_text?.trim()),
         })),
       });
     }
@@ -172,13 +179,20 @@ export async function POST(request: NextRequest) {
       category: book.category,
       subject: book.subject.trim(),
       custom_hierarchy: buildCustomHierarchy(book),
-      has_full_text: book.library_type === '课艺库' && !!book.file_url,
+      has_full_text: !!(book.full_text?.trim()),
       title: generateTitle(book),
       author: book.author?.trim() || '未知',
       dynasty: book.dynasty?.trim() || '清',
       description: book.description?.trim() || null,
       file_url: book.file_url?.trim() || null,
       file_type: book.file_type?.trim() || null,
+      full_text: book.full_text?.trim() || null,
+      rank: book.rank?.trim() || null,
+      author_brief: book.author_brief?.trim() || null,
+      author_detail: book.author_detail?.trim() || null,
+      reviewer: book.reviewer?.trim() || null,
+      reviewer_info: book.reviewer_info?.trim() || null,
+      review_content: book.review_content?.trim() || null,
     }));
 
     // 批量插入数据

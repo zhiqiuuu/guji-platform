@@ -32,6 +32,12 @@ export interface Database {
           subject: string | null
           custom_hierarchy: Json | null
           has_full_text: boolean | null
+          rank: string | null
+          author_brief: string | null
+          author_detail: string | null
+          reviewer: string | null
+          reviewer_info: string | null
+          review_content: string | null
           created_at: string
           updated_at: string
         }
@@ -57,6 +63,12 @@ export interface Database {
           subject?: string | null
           custom_hierarchy?: Json | null
           has_full_text?: boolean | null
+          rank?: string | null
+          author_brief?: string | null
+          author_detail?: string | null
+          reviewer?: string | null
+          reviewer_info?: string | null
+          review_content?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -82,6 +94,12 @@ export interface Database {
           subject?: string | null
           custom_hierarchy?: Json | null
           has_full_text?: boolean | null
+          rank?: string | null
+          author_brief?: string | null
+          author_detail?: string | null
+          reviewer?: string | null
+          reviewer_info?: string | null
+          review_content?: string | null
           created_at?: string
           updated_at?: string
         }

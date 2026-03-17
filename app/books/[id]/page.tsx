@@ -102,7 +102,7 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
       setBook(data);
 
       // 获取真实章节数据
-      if (data.file_type === 'pdf') {
+      if (data.file_type === 'pdf' && data.file_url?.trim()) {
         fetchChapters();
       }
     } catch (err) {
@@ -260,7 +260,8 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
   }
 
   const hasOCRText = book.full_text && book.full_text.trim();
-  const canViewPdf = book.file_type === 'pdf';
+  const canViewPdf = book.file_type === 'pdf' && !!book.file_url?.trim();
+  const isKeyiText = !!book.full_text?.trim() && !canViewPdf;
 
   return (
     <div className="h-[100dvh] md:h-screen flex flex-col">
@@ -293,7 +294,7 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
           {/* 右侧: 工具按钮 */}
           <div className="flex items-center gap-0.5 sm:gap-2 flex-shrink-0">
             {/* 面板切换 - 移动端只显示图标 */}
-            {hasOCRText && (
+            {(hasOCRText || isKeyiText || canViewPdf) && (
               <>
                 <Button
                   variant="outline"
@@ -346,8 +347,8 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
 
       {/* 主内容区 - 三栏布局 */}
       <div className="flex-1 flex overflow-hidden relative">
-        {/* 左侧目录栏 - 移动端显示为浮层 */}
-        {showLeftPanel && (
+        {/* 左侧面板 - PDF模式显示目录, 课艺模式显示元信息 */}
+        {showLeftPanel && (canViewPdf || isKeyiText) && (
           <>
             {/* 移动端遮罩层 */}
             <div
@@ -355,11 +356,74 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
               onClick={() => setShowLeftPanel(false)}
             />
             <div className="w-4/5 max-w-xs md:w-64 border-r bg-white flex-shrink-0 overflow-hidden md:relative absolute left-0 top-0 bottom-0 z-50 shadow-xl md:shadow-none">
-              <ChapterList
-                chapters={chapters}
-                currentPage={currentPage}
-                onChapterClick={(page) => setCurrentPage(page)}
-              />
+              {canViewPdf ? (
+                <ChapterList
+                  chapters={chapters}
+                  currentPage={currentPage}
+                  onChapterClick={(page) => setCurrentPage(page)}
+                />
+              ) : (
+                <div className="h-full overflow-y-auto p-4 space-y-4" style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}>
+                  <h3 className="text-sm font-bold text-stone-700 border-b border-stone-200 pb-2">课艺信息</h3>
+
+                  {book.rank && (
+                    <div>
+                      <div className="text-xs text-stone-500 mb-1">等级</div>
+                      <div className="text-sm text-amber-700 font-bold">{book.rank}</div>
+                    </div>
+                  )}
+
+                  <div>
+                    <div className="text-xs text-stone-500 mb-1">作者</div>
+                    <div className="text-sm text-stone-800 font-medium">{book.author}</div>
+                    {book.author_brief && (
+                      <div className="text-xs text-stone-500 mt-0.5">{book.author_brief}</div>
+                    )}
+                  </div>
+
+                  {book.author_detail && (
+                    <div>
+                      <div className="text-xs text-stone-500 mb-1">作者简介</div>
+                      <div className="text-xs text-stone-600 leading-relaxed">{book.author_detail}</div>
+                    </div>
+                  )}
+
+                  {book.reviewer && (
+                    <div>
+                      <div className="text-xs text-stone-500 mb-1">点评人</div>
+                      <div className="text-sm text-stone-800 font-medium">{book.reviewer}</div>
+                    </div>
+                  )}
+
+                  {book.reviewer_info && (
+                    <div>
+                      <div className="text-xs text-stone-500 mb-1">点评人简介</div>
+                      <div className="text-xs text-stone-600 leading-relaxed">{book.reviewer_info}</div>
+                    </div>
+                  )}
+
+                  <div>
+                    <div className="text-xs text-stone-500 mb-1">书院</div>
+                    <div className="text-sm text-stone-800">{book.academy}</div>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <div>
+                      <div className="text-xs text-stone-500 mb-1">年份</div>
+                      <div className="text-sm text-stone-800">{book.year}年</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-stone-500 mb-1">季节</div>
+                      <div className="text-sm text-stone-800">{book.season}</div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="text-xs text-stone-500 mb-1">类别</div>
+                    <div className="text-sm text-amber-700">{book.category}</div>
+                  </div>
+                </div>
+              )}
             </div>
           </>
         )}
@@ -374,6 +438,39 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
               onPageChange={setCurrentPage}
               onTotalPagesChange={setTotalPages}
             />
+          ) : isKeyiText ? (
+            <div className="h-full overflow-y-auto bg-amber-50/30">
+              <div className="max-w-3xl mx-auto px-6 py-8">
+                <div className="bg-white rounded-lg shadow-sm border border-stone-200 p-6 sm:p-8">
+                  <h2
+                    className="text-lg sm:text-xl font-bold text-stone-900 mb-4 leading-relaxed"
+                    style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}
+                  >
+                    {book.subject || book.title}
+                  </h2>
+                  <div className="flex flex-wrap gap-3 text-sm text-stone-600 mb-6 pb-4 border-b border-stone-100">
+                    <span>{book.author} · {book.dynasty}</span>
+                    {book.rank && <span className="text-amber-700 font-medium">{book.rank}</span>}
+                    {book.academy && <span>{book.academy} {book.year}年 {book.season}</span>}
+                  </div>
+                  <div
+                    className="text-base text-stone-800 leading-loose"
+                    style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}
+                  >
+                    {book.full_text!
+                      .replace(/\/n\n?/g, '\n')
+                      .split(/\n+/)
+                      .filter(p => p.trim())
+                      .map((paragraph, idx) => (
+                        <p key={idx} className="mb-6" style={{ textIndent: '2em' }}>
+                          {paragraph.trim()}
+                        </p>
+                      ))
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
           ) : (
             <div className="flex items-center justify-center h-full bg-gray-50">
               <div className="max-w-2xl mx-auto p-8 text-center">
@@ -446,8 +543,8 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
           )}
         </div>
 
-        {/* 右侧释文栏 - 移动端显示为浮层 */}
-        {showRightPanel && hasOCRText && (
+        {/* 右侧面板 - PDF模式显示释文, 课艺模式显示点评 */}
+        {showRightPanel && (hasOCRText || isKeyiText) && (
           <>
             {/* 移动端遮罩层 */}
             <div
@@ -455,10 +552,45 @@ export default function BookDetailPage({ params }: { params: Promise<{ id: strin
               onClick={() => setShowRightPanel(false)}
             />
             <div className="w-4/5 max-w-sm md:w-96 border-l bg-white flex-shrink-0 overflow-hidden md:relative absolute right-0 top-0 bottom-0 z-50 shadow-xl md:shadow-none">
-              <TranscriptionPanel
-                text={book.full_text}
-                currentPage={currentPage}
-              />
+              {canViewPdf ? (
+                <TranscriptionPanel
+                  text={book.full_text}
+                  currentPage={currentPage}
+                />
+              ) : (
+                <div className="h-full overflow-y-auto p-4 space-y-4" style={{ fontFamily: '"FangSong", "STFangsong", "仿宋", serif' }}>
+                  <h3 className="text-sm font-bold text-stone-700 border-b border-stone-200 pb-2">点评</h3>
+
+                  {book.reviewer && (
+                    <div className="text-sm text-stone-600">
+                      <span className="font-medium text-stone-800">{book.reviewer}</span>
+                      {book.reviewer_info && (
+                        <span className="text-xs text-stone-500 ml-1">评</span>
+                      )}
+                    </div>
+                  )}
+
+                  {book.review_content ? (
+                    <div
+                      className="text-sm text-stone-700 leading-relaxed whitespace-pre-wrap"
+                      style={{ textIndent: '2em' }}
+                    >
+                      {book.review_content}
+                    </div>
+                  ) : (
+                    <div className="text-sm text-stone-400">暂无点评</div>
+                  )}
+
+                  {book.reviewer_info && (
+                    <div className="mt-6 pt-4 border-t border-stone-100">
+                      <h4 className="text-xs text-stone-500 mb-2">点评人简介</h4>
+                      <div className="text-xs text-stone-600 leading-relaxed">
+                        {book.reviewer_info}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </>
         )}
