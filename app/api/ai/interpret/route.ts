@@ -16,7 +16,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const response = await chatBearer(AI_PROMPTS.INTERPRET(text), []);
+    const response = await chatBearer(AI_PROMPTS.INTERPRET(text), [], {
+      max_tokens: 800,
+    });
 
     return NextResponse.json({
       content: response,
