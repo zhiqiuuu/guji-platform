@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: response,
-      model: 'spark-lite',
+      model: 'deepseek-chat',
       hasContext: !!contextPrompt, // 告诉前端是否使用了数据库上下文
     });
   } catch (error: any) {

@@ -1,23 +1,23 @@
 /**
- * 讯飞星火 HTTP API - Bearer Token 认证
- * 使用简单的 Bearer Token 认证,适用于 Vercel Edge Runtime
+ * DeepSeek API 服务封装
+ * 兼容 OpenAI Chat Completions 格式
  *
- * 参考: https://www.xfyun.cn/doc/spark/HTTP调用文档.html
+ * 参考: https://api-docs.deepseek.com/zh-cn/
  */
 
-interface SparkMessage {
+interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
   content: string;
 }
 
-interface SparkHTTPRequest {
+interface ChatCompletionRequest {
   model: string;
-  messages: SparkMessage[];
+  messages: ChatMessage[];
   temperature?: number;
   max_tokens?: number;
 }
 
-interface SparkHTTPResponse {
+interface ChatCompletionResponse {
   choices: Array<{
     message: {
       role: string;
@@ -33,27 +33,30 @@ interface SparkHTTPResponse {
   };
 }
 
+const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions';
+const DEEPSEEK_MODEL = 'deepseek-chat';
+
 /**
- * 使用 Bearer Token 调用星火大模型
+ * 调用 DeepSeek 大模型
  */
 export async function sendToSparkBearer(
   apiKey: string,
   params: {
-    messages: SparkMessage[];
+    messages: ChatMessage[];
     temperature?: number;
     max_tokens?: number;
   }
 ): Promise<string> {
-  const requestBody: SparkHTTPRequest = {
-    model: 'generalv3.5', // 使用 3.5 模型
+  const requestBody: ChatCompletionRequest = {
+    model: DEEPSEEK_MODEL,
     messages: params.messages,
-    temperature: params.temperature || 0.7,
-    max_tokens: params.max_tokens || 2048,
+    temperature: params.temperature ?? 0.7,
+    max_tokens: params.max_tokens ?? 2048,
   };
 
-  console.log('正在调用星火 HTTP API (Bearer Token)...');
+  console.log('正在调用 DeepSeek API...');
 
-  const response = await fetch('https://spark-api-open.xf-yun.com/v1/chat/completions', {
+  const response = await fetch(DEEPSEEK_API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -64,18 +67,18 @@ export async function sendToSparkBearer(
 
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('星火 API 错误:', response.status, errorText);
-    throw new Error(`星火 API 错误 (${response.status}): ${errorText}`);
+    console.error('DeepSeek API 错误:', response.status, errorText);
+    throw new Error(`DeepSeek API 错误 (${response.status}): ${errorText}`);
   }
 
-  const data: SparkHTTPResponse = await response.json();
+  const data: ChatCompletionResponse = await response.json();
 
   if (!data.choices || data.choices.length === 0) {
-    throw new Error('星火 API 返回空响应');
+    throw new Error('DeepSeek API 返回空响应');
   }
 
   const content = data.choices[0].message.content;
-  console.log('星火 API 响应成功');
+  console.log('DeepSeek API 响应成功');
 
   return content;
 }
@@ -85,25 +88,25 @@ export async function sendToSparkBearer(
  */
 export async function chatBearer(
   message: string,
-  history: SparkMessage[] = [],
+  history: ChatMessage[] = [],
   options: {
     temperature?: number;
     max_tokens?: number;
   } = {}
 ): Promise<string> {
-  const apiPassword = process.env.SPARK_API_PASSWORD || '';
+  const apiKey = process.env.DEEPSEEK_API_KEY || '';
 
-  if (!apiPassword) {
-    console.error('星火 APIPassword 配置缺失');
-    throw new Error('星火 APIPassword 配置缺失,请检查环境变量');
+  if (!apiKey) {
+    console.error('DeepSeek API Key 配置缺失');
+    throw new Error('DeepSeek API Key 配置缺失，请检查环境变量');
   }
 
-  const messages: SparkMessage[] = [
+  const messages: ChatMessage[] = [
     ...history,
     { role: 'user', content: message },
   ];
 
-  return sendToSparkBearer(apiPassword, {
+  return sendToSparkBearer(apiKey, {
     messages,
     temperature: options.temperature,
     max_tokens: options.max_tokens,
