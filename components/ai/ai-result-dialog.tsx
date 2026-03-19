@@ -1,7 +1,7 @@
 'use client';
 
 import { X, Copy, Check, ChevronRight, ChevronLeft } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 interface AIResultDialogProps {
   title: string;
@@ -13,6 +13,20 @@ export function AIResultDialog({ title, content, onClose }: AIResultDialogProps)
   const [copied, setCopied] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+
+  // 将 markdown 文本转为简单 HTML
+  const renderedHtml = useMemo(() => {
+    return content
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/^### (.+)$/gm, '<h3 class="text-base font-bold text-stone-800 mt-4 mb-2">$1</h3>')
+      .replace(/^## (.+)$/gm, '<h2 class="text-lg font-bold text-stone-800 mt-4 mb-2">$1</h2>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong class="text-stone-900">$1</strong>')
+      .replace(/^\d+\.\s/gm, (m) => `<span class="text-amber-700 font-bold">${m}</span>`)
+      .replace(/^- (.+)$/gm, '<div class="pl-4 border-l-2 border-amber-200 my-1">$1</div>')
+      .replace(/\n/g, '<br/>');
+  }, [content]);
 
   useEffect(() => {
     // 延迟显示以触发动画
@@ -107,7 +121,7 @@ export function AIResultDialog({ title, content, onClose }: AIResultDialogProps)
           {/* 内容区域 */}
           <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-stone-50">
             <div
-              className="prose prose-stone max-w-none whitespace-pre-wrap bg-white p-4 sm:p-6 rounded-lg shadow-sm text-stone-900"
+              className="prose prose-stone max-w-none bg-white p-4 sm:p-6 rounded-lg shadow-sm text-stone-900"
               style={{
                 fontFamily: '"FangSong", "STFangsong", "仿宋", serif',
                 fontSize: '15px',
@@ -115,9 +129,8 @@ export function AIResultDialog({ title, content, onClose }: AIResultDialogProps)
                 fontWeight: '500',
                 color: '#1c1917'
               }}
-            >
-              {content}
-            </div>
+              dangerouslySetInnerHTML={{ __html: renderedHtml }}
+            />
           </div>
 
           {/* 底部 */}
